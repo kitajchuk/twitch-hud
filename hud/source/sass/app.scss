@@ -1,0 +1,161 @@
+/******************************************************************************
+ * Config / Dev / Debug
+*******************************************************************************/
+@import "./reset";
+
+$red: #ee2a3e;
+$green: #10ff59;
+$blue: #22beef;
+$pink: #f06c9d;
+$white: #fff;
+$black: #000;
+$black01: #111;
+$black02: #222;
+$black03: #333;
+$transform: 100px;
+$duration: 200ms;
+$marginHorz: 60px;
+$marginVert: 40px;
+
+body.dev {
+    background-color: $black;
+}
+
+
+
+/******************************************************************************
+ * Fonts
+*******************************************************************************/
+@font-face {
+    font-family: "Calamity-Regular";
+    src: url( "/fonts/Calamity-Regular.woff" ) format( "woff" );
+    font-style: normal;
+    font-stretch: normal;
+}
+@font-face {
+    font-family: "Calamity-Bold";
+    src: url( "/fonts/Calamity-Bold.woff" ) format( "woff" );
+    font-style: normal;
+    font-stretch: normal;
+}
+
+
+
+/******************************************************************************
+ * HUD
+*******************************************************************************/
+.ht {
+    color: $red;
+}
+.fb {
+    color: $pink;
+}
+.bk {
+    color: $blue;
+}
+.hud {
+    color: $white;
+    font-family: "Calamity-Regular";
+    font-size: 22px;
+    line-height: 1.5;
+
+    span {
+        font-family: "Calamity-Bold";
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: "Calamity-Bold";
+        font-size: 28px;
+    }
+}
+
+
+
+/******************************************************************************
+ * HUD Alerts
+*******************************************************************************/
+.hud__alert {
+    background-color: $black01;
+    border: 2px solid $black02;
+    border-radius: 200px;
+    left: 50%;
+    opacity: 0;
+    padding: 60px 160px;
+    position: fixed;
+    top: 50%;
+    transform: translate3d( -50%, -50%, 0 );
+    transition: transform $duration ease,
+                opacity $duration ease;
+
+    h1, p,
+    .hud__alert__bot {
+        opacity: 0;
+        transition: transform $duration ease,
+                    opacity $duration ease;
+    }
+
+    h1 {
+        transform: translate3d( 0, $transform, 0 );
+    }
+
+    p {
+        max-width: 480px;
+        transform: translate3d( 0, $transform * 2, 0 );
+        width: 100%;
+    }
+
+    &.is-active {
+        opacity: 1;
+        transform: translate3d( -50%, -50%, 0 );
+
+        h1, p {
+            opacity: 1;
+            transform: translate3d( 0, 0, 0 );
+        }
+        .hud__alert__bot {
+            opacity: 1;
+            transform: translate3d( 130px, -60%, 0 );
+        }
+    }
+}
+.hud__alert__bot {
+    font-size: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    transform: translate3d( 130px, -100% , 0 );
+}
+
+
+
+/******************************************************************************
+ * HUD Hearts
+*******************************************************************************/
+.hud__hearts {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0;
+    justify-content: flex-start;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transform: translate3d( $marginHorz, $marginVert, 0 );
+    width: 456px;
+}
+.hud__hearts__container {
+    display: inline-block;
+    height: 38px;
+    position: relative;
+    width: 38px;
+
+    span {
+        background-color: $red;
+        height: 28px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate3d( -50%, -50%, 0 );
+        width: 28px;
+    }
+}
