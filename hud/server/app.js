@@ -28,9 +28,6 @@ app.twitch = twitch;
 app.prompt = prompt;
 app.lager = lager;
 app.config = config;
-app.port = 5050; // Skate or Die!
-app.url = `http://localhost:${app.port}`;
-app.hub = "ws://twitchhub.kitajchuk.com";
 app.init = () => {
     // Initialize commands
     app.commands.forEach(( command ) => {
@@ -41,7 +38,7 @@ app.init = () => {
     prompt.init( app );
 
     // Initialize server
-    app.server.listen( app.port );
+    app.server.listen( config.hud.port );
 };
 app.runCommand = ( comm, message ) => {
     return new Promise(( resolve, reject ) => {
@@ -66,20 +63,20 @@ app.oauth = ( req, res, next ) => {
     // 0.1 Authorization
     if ( !req.query.code && !twitch.memo.oauth ) {
         // https://dev.twitch.tv/docs/v5/guides/authentication/#oauth-authorization-code-flow-user-access-tokens
-        res.redirect( `${config.twitch.oauthUrl}?client_id=${config.twitch.clientId}&redirect_uri=${app.url}&response_type=code&scope=${config.twitch.scope}` );
+        res.redirect( `${config.all.oauthUrl}?client_id=${config.all.clientId}&redirect_uri=${config.hud.url}&response_type=code&scope=${config.all.scope}` );
 
     // 0.2 Token Request
     } else if ( req.query.code && !twitch.memo.oauth ) {
         request({
-            url: config.twitch.tokenUrl,
+            url: config.all.tokenUrl,
             json: true,
             method: "POST",
             form: {
-                client_id: config.twitch.clientId,
-                client_secret: config.twitch.clientSecret,
+                client_id: config.all.clientId,
+                client_secret: config.all.clientSecret,
                 code: req.query.code,
                 grant_type: "authorization_code",
-                redirect_uri: app.url
+                redirect_uri: config.hud.url
             }
 
         }, ( error, response, oauthJson ) => {
@@ -181,11 +178,11 @@ app.websocketclient.on( "connect", ( connection ) => {
     });
 });
 app.websocketclient.connect(
-    app.hub,
+    config.hud.hubWSUrl,
     "echo-protocol",
-    app.url,
+    config.hud.url,
     {
-        "Client-ID": config.twitch.clientId
+        "Client-ID": config.all.clientId
     }
 );
 

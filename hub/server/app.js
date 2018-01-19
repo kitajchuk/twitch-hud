@@ -8,7 +8,6 @@ const WebSocketServer = require( "websocket" ).server;
 const bodyParser = require( "body-parser" );
 const request = require( "request-promise" );
 const lager = require( "properjs-lager" );
-const crypto = require( "crypto" );
 
 // Load lib
 const files = require( "../../files" );
@@ -22,18 +21,14 @@ const app = {};
 // {app} Config
 app.ids = files.read( path.join( __dirname, "data", "ids.json" ), true );
 app.dev = (process.argv.pop() === "dev" ? true : false);
-app.port = 8000;
-app.lease = 864000;
-app.url = "http://twitchhub.kitajchuk.com";
-app.secret = crypto.createHmac( "sha256", "shut up navi" ).digest( "hex" );
 app.subs = {};
 app.init = () => {
     // Initialize server
-    app.server.listen( app.port );
+    app.server.listen( config.hub.port );
 
     // Subscribe to users/follows event
     app.pubsub( "users/follows", "subscribe", {
-        to_id: config.twitch.userId
+        to_id: config.all.userId
     });
 };
 app.broadcast = ( event, data ) => {
@@ -71,14 +66,14 @@ app.pubsub = ( topic, mode, params ) => {
         method: "POST",
         json: true,
         body: {
-            "hub.callback": `${app.url}/shub`,
+            "hub.callback": `${config.hub.url}/shub`,
             "hub.mode": mode,
             "hub.topic": `https://api.twitch.tv/helix/${topic}?${query.join( "&" )}`,
-            "hub.secret": app.secret,
-            "hub.lease_seconds": app.lease
+            "hub.secret": config.hub.secret,
+            "hub.lease_seconds": config.hub.lease
         },
         headers: {
-            "Client-ID": config.twitch.clientId,
+            "Client-ID": config.all.clientId,
         }
 
     }).then(( response ) => {
@@ -141,7 +136,7 @@ app.websocketserver.on( "request", ( request ) => {
 
     // console.log( request.httpRequest.headers );
 
-    if ( request.httpRequest.headers["client-id"] === config.twitch.clientId ) {
+    if ( request.httpRequest.headers["client-id"] === config.all.clientId ) {
         request.accept( "echo-protocol", request.origin );
     }
 });

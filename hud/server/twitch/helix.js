@@ -24,8 +24,8 @@ module.exports = {
     init ( app ) {
         this.app = app;
         this.api = new TwitchHelix({
-            clientId: this.app.config.twitch.clientId,
-            clientSecret: this.app.config.twitch.clientSecret
+            clientId: this.app.config.all.clientId,
+            clientSecret: this.app.config.all.clientSecret
         });
 
         this.app.lager.server( `[${this.name}] utility initialized` );
@@ -37,7 +37,7 @@ module.exports = {
         //     method: "GET",
         //     headers: {
         //         "Authorization": `Bearer ${this.app.twitch.memo.oauth.access_token}`,
-        //         "Client-ID": this.app.config.twitch.clientId
+        //         "Client-ID": this.app.config.all.clientId
         //     }
         //
         // }).then(( response ) => {

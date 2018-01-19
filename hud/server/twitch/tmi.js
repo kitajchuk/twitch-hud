@@ -31,21 +31,21 @@ module.exports = {
         }
     },
     emit ( message ) {
-        this.memo.client.say( `#${this.app.config.twitch.userName}`, message );
+        this.memo.client.say( `#${this.app.config.all.userName}`, message );
     },
     initMe () {
         this.memo.client = new tmi.client({
             options: {
-                clientId: this.app.config.twitch.clientId
+                clientId: this.app.config.all.clientId
             },
             connection: {
                 reconnect: true
             },
             identity: {
-                username: this.app.config.twitch.userName,
+                username: this.app.config.all.userName,
                 password: this.app.twitch.memo.oauth.access_token
             },
-            channels: [this.app.config.twitch.userChannel]
+            channels: [this.app.config.all.userChannel]
         });
 
         this.memo.client.connect().then(( foo ) => {
@@ -81,16 +81,16 @@ module.exports = {
     initBot () {
         this.memo.bot = new tmi.client({
             options: {
-                clientId: this.app.config.twitch.clientId
+                clientId: this.app.config.all.clientId
             },
             connection: {
                 reconnect: true
             },
             identity: {
-                username: this.app.config.twitch.botName,
-                password: this.app.config.twitch.botToken
+                username: this.app.config.all.botName,
+                password: this.app.config.all.botToken
             },
-            channels: [this.app.config.twitch.userChannel, this.app.config.twitch.botChannel]
+            channels: [this.app.config.all.userChannel, this.app.config.all.botChannel]
         });
 
         this.memo.bot.connect().then(() => {
