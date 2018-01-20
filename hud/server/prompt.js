@@ -13,7 +13,16 @@ module.exports = {
             const chunk = process.stdin.read().replace( /^\s+|\s+$/g, "" );
 
             if ( chunk !== null ) {
-                app.twitch.tmi.emit( chunk );
+                // Run tests...
+                if ( chunk === "!testhost"  ) {
+                    app.twitch.tmi.alertHost( "gerudoslut", 420 );
+
+                } else if ( chunk === "!testfollow"  ) {
+                    app.twitch.helix.alertFollow( "dinsfire09" );
+
+                } else {
+                    app.twitch.tmi.emit( chunk );
+                }
             }
         });
         process.stdin.on( "end", () => {

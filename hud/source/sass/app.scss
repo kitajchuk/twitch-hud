@@ -7,6 +7,9 @@ $red: #ee2a3e;
 $green: #10ff59;
 $blue: #22beef;
 $pink: #f06c9d;
+$purple: #86006a;
+$yellow: #eefd02;
+$orange: #ff6b01;
 $white: #fff;
 $black: #000;
 $black01: #111;
@@ -44,14 +47,26 @@ body.dev {
 /******************************************************************************
  * HUD
 *******************************************************************************/
-.ht {
+.red {
     color: $red;
 }
-.fb {
+.pink {
     color: $pink;
 }
-.bk {
+.blue {
     color: $blue;
+}
+.green {
+    color: $green;
+}
+.purple {
+    color: $purple;
+}
+.orange {
+    color: $orange;
+}
+.yellow {
+    color: $yellow;
 }
 .hud {
     color: $white;
@@ -66,6 +81,10 @@ body.dev {
     h1, h2, h3, h4, h5, h6 {
         font-family: "Calamity-Bold";
         font-size: 28px;
+    }
+
+    .mono {
+        font-family: monospace;
     }
 }
 
@@ -141,7 +160,7 @@ body.dev {
     position: fixed;
     top: 0;
     transform: translate3d( $marginHorz, $marginVert, 0 );
-    width: 456px;
+    width: 342px;
 }
 .hud__hearts__container {
     display: inline-block;
@@ -151,6 +170,44 @@ body.dev {
 
     span {
         background-color: $red;
+        height: 28px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate3d( -50%, -50%, 0 );
+        width: 28px;
+    }
+}
+
+
+
+/******************************************************************************
+ * HUD hud__fairies
+*******************************************************************************/
+.hud__fairies {
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0;
+    justify-content: flex-start;
+    position: fixed;
+    right: 0;
+    transform: translate3d( -$marginHorz, -$marginVert, 0 );
+    width: 570px;
+}
+.hud__fairies__container {
+    display: inline-block;
+    height: 38px;
+    position: relative;
+    transition: opacity $duration ease;
+    width: 38px;
+
+    &.slashed {
+        opacity: 0;
+    }
+
+    span {
+        background-color: $black02;
         height: 28px;
         left: 50%;
         position: absolute;

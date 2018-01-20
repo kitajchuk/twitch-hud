@@ -1,9 +1,9 @@
 export default ( data ) => {
     const html = [];
 
-    while ( html.length < data.hearts.value ) {
+    while ( html.length < data.fairies.max ) {
         html.push(`
-            <div class="hud__hearts__container js-hud-hearts-container">
+            <div class="hud__fairies__container js-hud-fairies-container">
                 <span></span>
             </div>
         `);

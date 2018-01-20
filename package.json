@@ -9,7 +9,7 @@
     "scripts": {
         "hub:boot": "node ./hub/boot.js",
         "hub:start": "./node_modules/.bin/forever -a -l forever.log -o out.log -e err.log start ./hub/main.js",
-        "hub:start:dev": "./node_modules/.bin/nodemon -i source -i public -i node_modules ./hub/main.js -- 'dev'",
+        "hub:start:dev": "./node_modules/.bin/nodemon -i ./hud/source -i ./hud/public -i node_modules ./hub/main.js -- 'dev'",
         "hub:stop": "./node_modules/.bin/forever stopall",
         "hub:deploy": "rsync -av -e 'ssh -i /Users/kitajchuk/.ssh/clutch.pem' --rsync-path 'sudo rsync' hub config.js files.js package.json ec2-user@35.165.160.198:/var/www/html/",
         "hub:connect": "ssh ec2-user@35.165.160.198 -i ~/.ssh/clutch.pem",

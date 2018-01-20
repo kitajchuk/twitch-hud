@@ -1,5 +1,5 @@
 module.exports = [
     require( "./chat" ),
-    require( "./slashHeart" ),
+    require( "./heartThief" ),
     require( "./fairyBottle" )
 ];

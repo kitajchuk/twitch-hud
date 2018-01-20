@@ -148,9 +148,9 @@ app.websocketserver.on( "connect", ( connection ) => {
                 hearts: app.data.hearts
             });
 
-        } else if ( utf8Data.event === "rupees" ) {
-            app.broadcast( "rupees", {
-                rupees: app.data.rupees
+        } else if ( utf8Data.event === "fairies" ) {
+            app.broadcast( "fairies", {
+                fairies: app.data.fairies
             });
         }
     });
@@ -173,7 +173,7 @@ app.websocketclient.on( "connect", ( connection ) => {
         const utf8Data = JSON.parse( message.utf8Data );
 
         if ( utf8Data.event === "shub" ) {
-            twitch.helix.alertFollows( utf8Data.data );
+            twitch.helix.subFollow( utf8Data.data );
         }
     });
 });

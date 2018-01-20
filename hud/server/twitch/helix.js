@@ -30,28 +30,19 @@ module.exports = {
 
         this.app.lager.server( `[${this.name}] utility initialized` );
     },
-    alertFollows ( data ) {
-        // request({
-        //     url: `https://api.twitch.tv/helix/users?id=${data.from_id}`,
-        //     json: true,
-        //     method: "GET",
-        //     headers: {
-        //         "Authorization": `Bearer ${this.app.twitch.memo.oauth.access_token}`,
-        //         "Client-ID": this.app.config.all.clientId
-        //     }
-        //
-        // }).then(( response ) => {
-        //
-        // });
+    subFollow ( data ) {
         this.api.getTwitchUserById( data.from_id ).then(( twitchUser ) => {
-            const alertHtml = `
-                <h1 class="bk">Hyrule Heroes</h1>
-                <p><span class="bk">${twitchUser.display_name}</span> has joined the ranks of the finest Hylians around!</p>
-            `;
+            this.alertFollow( twitchUser.display_name );
+        });
+    },
+    alertFollow ( username ) {
+        const alertHtml = `
+            <h1 class="yellow">Is that&hellip; a skull kid&hellip;</h1>
+            <p><span class="blue">${username}</span> found their way through the <span class="blue">Lost Woods</span> and stumbled upon our channel. Welcome to the lost kids <span class="blue">${username}</span>&hellip;</p>
+        `;
 
-            this.app.broadcast( "alert", {
-                alertHtml: alertHtml
-            });
+        this.app.broadcast( "alert", {
+            alertHtml: alertHtml
         });
     }
 };

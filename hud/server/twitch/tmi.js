@@ -67,7 +67,7 @@ module.exports = {
             });
 
             // Hosts
-            this.subHosts();
+            this.subHost();
 
             // Subs ( alert )
             // Cheer/Bits ( alert ) {userstate.bits}
@@ -100,16 +100,19 @@ module.exports = {
             this.app.lager.error( `[${this.name}] ${error}` );
         });
     },
-    subHosts ( app ) {
+    subHost ( app ) {
         this.memo.client.on( "hosted", ( channel, username, viewers, autohost ) => {
-            const alertHtml = `
-                <h1 class="bk">Honorable Host</h1>
-                <p><span class="bk">${username}</span> is hosting you with ${viewers} ${viewers === 1 ? "viewer" : "viewers"}!</p>
-            `;
+            this.alertHosts( username, viewers );
+        });
+    },
+    alertHost ( username, viewers ) {
+        const alertHtml = `
+            <h1 class="yellow">That owl&hellip; is following me&hellip;</h1>
+            <p><span class="blue">${username}</span> is now hosting you with a viewing party of <span class="blue">${viewers}</span>! Thanks, <span class="blue">${username}</span>, and welcome to the channel&hellip;</p>
+        `;
 
-            this.app.broadcast( "alert", {
-                alertHtml: alertHtml
-            });
+        this.app.broadcast( "alert", {
+            alertHtml: alertHtml
         });
     }
 };

@@ -1,5 +1,6 @@
 import alert from "./alert";
 import hearts from "./hearts";
+import fairies from "./fairies";
 import chat from "./chat";
 
 
@@ -27,26 +28,22 @@ const socket = {
             if ( response.event === "chat" ) {
                 console.log( response );
 
-            // Emotes
-            } else if ( response.event === "emotes" ) {
-                chat.pipe( "emotes", response.data.emotes );
-
-            // Badges
-            } else if ( response.event === "badges" ) {
-                chat.pipe( "badges", response.data.badges );
-
             // HUD::events
             } else if ( response.event === "alert" ) {
                 alert.push( response.data );
 
             } else if ( response.event === "hearts" ) {
                 hearts.pipe( response.data );
+
+            } else if ( response.event === "fairies" ) {
+                fairies.pipe( response.data );
             }
         };
         this.websocket.onopen = () => {
             window.app.chat = chat.init();
             window.app.alert = alert.init();
             window.app.hearts = hearts.init();
+            window.app.fairies = fairies.init();
         };
         this.websocket.onclose = () => {};
 
