@@ -66,6 +66,7 @@
         "properjs-router": "^0.3.7",
         "properjs-scroll2": "~0.2",
         "properjs-scrollcontroller": "~0.2",
+        "properjs-slacker": "^0.1.4",
         "properjs-template": "~0.2",
         "properjs-throttle": "^0.3.0",
         "properjs-tween": "~0.2",
