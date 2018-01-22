@@ -21,10 +21,7 @@ module.exports = {
     },
     exec ( client, bot, channel, userstate, message, self, tmi ) {
         this.app.runCommand( this.name, message ).then(( response ) => {
-            // const num = parseInt( response.match[ 1 ], 10 );
-            //
-            // this.app.data.hearts.value += num;
-            // this.app.data.hearts.value = this.app.data.hearts.value > this.app.data.hearts.max ? this.app.data.hearts.max : this.app.data.hearts.value;
+            const num = 1;
 
             if ( this.app.data.fairies.value === 0 ) {
                 const alertHtml = `
@@ -37,9 +34,11 @@ module.exports = {
                 });
 
             } else {
-                const num = 1;
-
                 this.app.data.hearts.value += num;
+                this.app.data.hearts.value = this.app.data.hearts.value > this.app.data.hearts.max ? this.app.data.hearts.max : this.app.data.hearts.value;
+
+                this.app.data.fairies.value -= num;
+                this.app.data.fairies.value = this.app.data.fairies.value < 0 ? 0 : this.app.data.fairies.value;
 
                 const alertHtml = `
                     <h1 class="pink">Fairy Bottle</h1>
@@ -52,6 +51,10 @@ module.exports = {
 
                 this.app.broadcast( "hearts", {
                     hearts: this.app.data.hearts
+                });
+
+                this.app.broadcast( "fairies", {
+                    fairies: this.app.data.fairies
                 });
             }
         });

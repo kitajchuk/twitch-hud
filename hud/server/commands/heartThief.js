@@ -21,14 +21,10 @@ module.exports = {
     },
     exec ( client, bot, channel, userstate, message, self, tmi ) {
         this.app.runCommand( this.name, message ).then(( response ) => {
-            // const num = parseInt( response.match[ 1 ], 10 );
-            //
-            // this.app.data.hearts.value -= num;
-            // this.app.data.hearts.value = this.app.data.hearts.value < 0 ? 0 : this.app.data.hearts.value;
-
             const num = 1;
 
             this.app.data.hearts.value -= num;
+            this.app.data.hearts.value = this.app.data.hearts.value < 0 ? 0 : this.app.data.hearts.value;
 
             const alertHtml = `
                 <h1 class="red">Heart Thief</h1>

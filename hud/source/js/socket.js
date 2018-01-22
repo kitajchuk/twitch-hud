@@ -37,6 +37,9 @@ const socket = {
 
             } else if ( response.event === "fairies" ) {
                 fairies.pipe( response.data );
+
+            } else if ( response.event === "fairyCounter" ) {
+                fairies.counter( response.data );
             }
         };
         this.websocket.onopen = () => {

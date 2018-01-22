@@ -39,6 +39,8 @@ app.init = () => {
 
     // Initialize server
     app.server.listen( config.hud.port );
+
+    app.lager.data( app.data );
 };
 app.runCommand = ( comm, message ) => {
     return new Promise(( resolve, reject ) => {
@@ -54,10 +56,12 @@ app.runCommand = ( comm, message ) => {
     });
 };
 app.broadcast = ( event, data ) => {
-    app.connection.send(JSON.stringify({
-        event,
-        data
-    }));
+    if ( app.connection ) {
+        app.connection.send(JSON.stringify({
+            event,
+            data
+        }));
+    }
 };
 app.oauth = ( req, res, next ) => {
     // 0.1 Authorization

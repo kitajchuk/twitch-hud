@@ -167,6 +167,11 @@ body.dev {
     height: 38px;
     position: relative;
     width: 38px;
+    transition: opacity $duration ease;
+
+    &.slashed {
+        opacity: 0;
+    }
 
     span {
         background-color: $red;
@@ -182,7 +187,7 @@ body.dev {
 
 
 /******************************************************************************
- * HUD hud__fairies
+ * HUD Fairies
 *******************************************************************************/
 .hud__fairies {
     bottom: 0;
@@ -199,12 +204,7 @@ body.dev {
     display: inline-block;
     height: 38px;
     position: relative;
-    transition: opacity $duration ease;
     width: 38px;
-
-    &.slashed {
-        opacity: 0;
-    }
 
     span {
         background-color: $black02;
@@ -214,5 +214,28 @@ body.dev {
         top: 50%;
         transform: translate3d( -50%, -50%, 0 );
         width: 28px;
+        transition: background-color $duration ease;
+    }
+
+    &.found {
+        span {
+            background-color: $pink;
+        }
+    }
+}
+
+
+
+/******************************************************************************
+ * HUD Timer
+*******************************************************************************/
+.hud__counter {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    transform: translate3d( $marginHorz, -$marginVert, 0 );
+
+    span {
+        color: $yellow;
     }
 }
