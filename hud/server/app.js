@@ -40,7 +40,9 @@ app.init = () => {
     // Initialize server
     app.server.listen( config.hud.port );
 
-    app.lager.data( app.data );
+    app.lager.info( "<<< app data" );
+        app.lager.data( app.data );
+    app.lager.info( "app data >>>" );
 };
 app.runCommand = ( comm, message ) => {
     return new Promise(( resolve, reject ) => {
@@ -144,10 +146,7 @@ app.websocketserver.on( "connect", ( connection ) => {
         // { event, data }
         const utf8Data = JSON.parse( message.utf8Data );
 
-        if ( utf8Data.event === "chat" ) {
-            app.twitch.tmi.emit( utf8Data.data.message );
-
-        } else if ( utf8Data.event === "hearts" ) {
+        if ( utf8Data.event === "hearts" ) {
             app.broadcast( "hearts", {
                 hearts: app.data.hearts
             });

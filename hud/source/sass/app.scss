@@ -12,6 +12,7 @@ $yellow: #eefd02;
 $orange: #ff6b01;
 $white: #fff;
 $black: #000;
+$black075: rgba( 0, 0, 0, 0.75 );
 $black01: #111;
 $black02: #222;
 $black03: #333;
@@ -20,8 +21,18 @@ $duration: 200ms;
 $marginHorz: 60px;
 $marginVert: 40px;
 
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
 body.dev {
     background-color: $black;
+    background-size: cover;
+    background-image: url( "/img/botwimage.jpeg" );
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
 }
 
 
@@ -94,8 +105,7 @@ body.dev {
  * HUD Alerts
 *******************************************************************************/
 .hud__alert {
-    background-color: $black01;
-    border: 2px solid $black02;
+    background-color: $black075;
     border-radius: 200px;
     left: 50%;
     opacity: 0;
@@ -133,7 +143,7 @@ body.dev {
         }
         .hud__alert__bot {
             opacity: 1;
-            transform: translate3d( 130px, -60%, 0 );
+            transform: translate3d( 130px, -50%, 0 );
         }
     }
 }
@@ -207,7 +217,7 @@ body.dev {
     width: 38px;
 
     span {
-        background-color: $black02;
+        background-color: $black075;
         height: 28px;
         left: 50%;
         position: absolute;

@@ -31,14 +31,18 @@ module.exports = {
         this.app.lager.server( `[${this.name}] utility initialized` );
     },
     subFollow ( data ) {
-        this.api.getTwitchUserById( data.from_id ).then(( twitchUser ) => {
-            this.alertFollow( twitchUser.display_name );
+        this.api.getTwitchUserById( data.from_id ).then(( userstate ) => {
+            this.app.lager.info( "<<< new user object" );
+                this.app.lager.data( userstate );
+            this.app.lager.info( "new user object >>>" );
+
+            this.alertFollow( userstate.display_name );
         });
     },
     alertFollow ( username ) {
         const alertHtml = `
-            <h1 class="yellow">Is that&hellip; a skull kid&hellip;</h1>
-            <p><span class="blue">${username}</span> found their way through the <span class="blue">Lost Woods</span> and stumbled upon our channel. Welcome to the lost kids <span class="blue">${username}</span>&hellip;</p>
+            <h1 class="yellow">Follow</h1>
+            <p><span class="blue">${username}</span> is now following the channel!</p>
         `;
 
         this.app.broadcast( "alert", {

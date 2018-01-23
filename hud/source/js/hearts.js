@@ -9,7 +9,6 @@ const hearts = {
         this.heartBox = $( ".js-hud-hearts" );
         this.hearts = null;
         this.data = null;
-        this.last = null;
 
         socket.emit( "hearts" );
 
@@ -18,37 +17,33 @@ const hearts = {
 
     render () {
         this.heartBox[ 0 ].innerHTML = heartsView( this.data );
+        this.hearts = this.heartBox.find( ".js-hud-hearts-container" );
     },
 
     pipe ( data ) {
         if ( !this.data ) {
             this.data = data;
 
-            console.log( "hearts", this.data );
+            // console.log( "hearts", this.data );
 
             this.render();
             this.pipe( data );
 
         } else {
-            this.last = this.data;
             this.data = data;
 
-            // remove .slashed
-            // add .slashed for diff between max and value
+            const remaining = this.data.hearts.max - (this.data.hearts.max - this.data.hearts.value);
 
-            // if ( this.data.hearts.value === this.last.hearts.value ) {
-            //     console.log( "Heart miss!" );
-            //
-            // // Lose 1 heart container
-            // } else if ( this.data.hearts.value < this.last.hearts.value ) {
-            //     this.hearts = this.heartBox.find( ".js-hud-hearts-container" ).not( ".slashed" );
-            //     this.hearts.last().addClass( "slashed" );
-            //
-            // // Gain 1 heart container
-            // } else {
-            //     this.hearts = this.heartBox.find( ".js-hud-hearts-container" ).is( ".slashed" );
-            //     this.hearts.last().removeClass( "slashed" );
-            // }
+            // console.log( remaining );
+
+            this.hearts.forEach(( heart, i ) => {
+                if ( (i + 1) > remaining ) {
+                    this.hearts.eq( i ).addClass( "slashed" );
+
+                } else {
+                    this.hearts.eq( i ).removeClass( "slashed" );
+                }
+            });
         }
     }
 };

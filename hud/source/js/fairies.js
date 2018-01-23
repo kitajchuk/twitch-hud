@@ -19,6 +19,7 @@ const fairies = {
 
     render () {
         this.fairyBox[ 0 ].innerHTML = fairiesView( this.data );
+        this.fairies = this.fairyBox.find( ".js-hud-fairies-container" );
     },
 
     formatTime ( time ) {
@@ -40,31 +41,26 @@ const fairies = {
         if ( !this.data ) {
             this.data = data;
 
-            console.log( "fairies", this.data );
+            // console.log( "fairies", this.data );
 
             this.render();
             this.pipe( data );
 
         } else {
-            this.last = this.data;
             this.data = data;
 
-            // remove .found
-            // add .found for diff between max and value
+            const remaining = this.data.fairies.max - this.data.fairies.value;
 
-            // if ( this.data.fairies.value === this.last.fairies.value ) {
-            //     console.log( "Fairy miss!" );
-            //
-            // // Lose 1 fairy bottle
-            // } else if ( this.data.fairies.value < this.last.fairies.value ) {
-            //     this.fairies = this.fairyBox.find( ".js-hud-fairies-container" ).is( ".found" );
-            //     this.fairies.first().removeClass( "found" );
-            //
-            // // Gain 1 fairy bottle
-            // } else {
-            //     this.fairies = this.fairyBox.find( ".js-hud-fairies-container" ).not( ".found" );
-            //     this.fairies.last().addClass( "found" );
-            // }
+            // console.log( remaining );
+
+            this.fairies.forEach(( fairy, i ) => {
+                if ( (i + 1) > remaining ) {
+                    this.fairies.eq( i ).addClass( "found" );
+
+                } else {
+                    this.fairies.eq( i ).removeClass( "found" );
+                }
+            });
         }
     }
 };

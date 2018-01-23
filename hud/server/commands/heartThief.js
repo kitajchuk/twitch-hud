@@ -28,7 +28,7 @@ module.exports = {
 
             const alertHtml = `
                 <h1 class="red">Heart Thief</h1>
-                <p><span class="blue">${userstate.username}</span> appears to be an acolyte of Ganon and has stolen <span class="blue">${num}</span> of your hearts! You only have <span class="blue">${this.app.data.hearts.value}</span> ${this.app.data.hearts.value > 1 ? "hearts" : "heart"} left so be careful&hellip;</p>
+                <p><span class="blue">${userstate.username}</span> has stolen <span class="blue">${num}</span> of your hearts! You only have <span class="blue">${this.app.data.hearts.value}</span> ${this.app.data.hearts.value > 1 ? "hearts" : "heart"} left so be careful&hellip;</p>
             `;
 
             this.app.broadcast( "alert", {

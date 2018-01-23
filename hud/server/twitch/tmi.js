@@ -30,8 +30,11 @@ module.exports = {
             this.app.lager.server( `[${this.name}] utility initialized` );
         }
     },
-    emit ( message ) {
+    emitMe ( message ) {
         this.memo.client.say( `#${this.app.config.all.userName}`, message );
+    },
+    emitBot ( message ) {
+        this.memo.bot.say( `#${this.app.config.all.userName}`, message );
     },
     initMe () {
         this.memo.client = new tmi.client({
@@ -66,13 +69,11 @@ module.exports = {
                 });
             });
 
-            // Hosts
+            // Chat::Listeners
             this.subHost();
-
-            // Subs ( alert )
-            // Cheer/Bits ( alert ) {userstate.bits}
-            // Follows ( alert )
-            // Raids ( alert )
+            this.subSub();
+            this.subResub();
+            this.subCheer();
 
         }).catch(( error ) => {
             this.app.lager.error( `[${this.name}] ${error}` );
@@ -102,13 +103,70 @@ module.exports = {
     },
     subHost ( app ) {
         this.memo.client.on( "hosted", ( channel, username, viewers, autohost ) => {
-            this.alertHosts( username, viewers );
+            this.alertHost( username, viewers );
         });
     },
     alertHost ( username, viewers ) {
         const alertHtml = `
-            <h1 class="yellow">That owl&hellip; is following me&hellip;</h1>
-            <p><span class="blue">${username}</span> is now hosting you with a viewing party of <span class="blue">${viewers}</span>! Thanks, <span class="blue">${username}</span>, and welcome to the channel&hellip;</p>
+            <h1 class="yellow">Host</h1>
+            <p><span class="blue">${username}</span> is now hosting you with a viewing party of <span class="blue">${viewers}</span>! Welcome to the channel!</p>
+        `;
+
+        this.app.broadcast( "alert", {
+            alertHtml: alertHtml
+        });
+    },
+    subSub ( app ) {
+        this.memo.client.on( "subscription", ( channel, username, method, message, userstate ) => {
+            this.app.lager.info( "<<< sub method object" );
+                this.app.lager.data( method );
+            this.app.lager.info( "sub method object >>>" );
+
+            this.alertSub( username, message, method );
+        });
+    },
+    alertSub ( username, message, method ) {
+        const alertHtml = `
+            <h1 class="yellow">Sub</h1>
+            <p><span class="blue">${username}</span> just subscribed to the channel! They said: <span class="blue">${message ? message : "Nothing&hellip;"}</span></p>
+        `;
+
+        this.app.broadcast( "alert", {
+            alertHtml: alertHtml
+        });
+    },
+    subResub ( app ) {
+        this.memo.client.on( "resub", ( channel, username, months, message, userstate, methods ) => {
+            this.app.lager.info( "<<< resub methods object" );
+                this.app.lager.data( methods );
+            this.app.lager.info( "resub methods object >>>" );
+
+            this.alertResub( username, message, months, methods );
+        });
+    },
+    alertResub ( username, message, months, methods ) {
+        const alertHtml = `
+            <h1 class="yellow">Resub</h1>
+            <p><span class="blue">${username}</span> has resubscribed to the channel for ${months} months in a row! They said: <span class="blue">${message ? message : "Nothing&hellip;"}</span></p>
+        `;
+
+        this.app.broadcast( "alert", {
+            alertHtml: alertHtml
+        });
+    },
+    subCheer ( app ) {
+        this.memo.client.on( "cheer", ( channel, userstate, message ) => {
+            this.app.lager.info( "<<< cheer userstate object" );
+                this.app.lager.data( userstate );
+            this.app.lager.info( "cheer userstate object >>>" );
+
+            this.alertCheer( userstate, message );
+        });
+    },
+    alertCheer ( userstate, message ) {
+        const alertHtml = `
+            <h1 class="yellow">Cheer</h1>
+            <p><span class="blue">${userstate.username}</span> has just cheered ${userstate.bits} bits! They said: <span class="blue">${message ? message : "Nothing&hellip;"}</span></p>
         `;
 
         this.app.broadcast( "alert", {

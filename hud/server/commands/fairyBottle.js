@@ -24,14 +24,7 @@ module.exports = {
             const num = 1;
 
             if ( this.app.data.fairies.value === 0 ) {
-                const alertHtml = `
-                    <h1 class="pink">False Fairy</h1>
-                    <p><span class="blue">${userstate.username}</span> thinks they can use fairies any old time they like? Use the <span class="blue mono">!ff</span> command so you can catch some first&hellip;</p>
-                `;
-
-                this.app.broadcast( "alert", {
-                    alertHtml: alertHtml
-                });
+                this.app.twitch.tmi.emitBot( `@${userstate.username} The channel needs to catch fairies before they can spend them...` );
 
             } else {
                 this.app.data.hearts.value += num;
@@ -41,8 +34,8 @@ module.exports = {
                 this.app.data.fairies.value = this.app.data.fairies.value < 0 ? 0 : this.app.data.fairies.value;
 
                 const alertHtml = `
-                    <h1 class="pink">Fairy Bottle</h1>
-                    <p><span class="blue">${userstate.username}</span> appears to be a follower of the Great Fairies and gave you a fairy in a bottle worth <span class="blue">${num}</span> ${num > 1 ? "hearts" : "heart"}! You now have <span class="blue">${this.app.data.hearts.value}</span> whole hearts!</p>
+                    <h1 class="yellow">Fairy Bottle</h1>
+                    <p><span class="blue">${userstate.username}</span> gave you a fairy in a bottle worth <span class="blue">${num}</span> ${num > 1 ? "hearts" : "heart"}! You now have <span class="blue">${this.app.data.hearts.value}</span> whole hearts!</p>
                 `;
 
                 this.app.broadcast( "alert", {
