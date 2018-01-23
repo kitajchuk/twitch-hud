@@ -23,3 +23,11 @@ Here's the catch. We want to find all the fairies, but we also want **Kita** to 
 * `!ht`: Heart Thief: Steal a heart from Kita.
 * `!ff`: Fairy Finder: Attempt to catch a fairy.
 * `!fb`: Fairy's Bottle: Recover a heart for Kita.
+
+
+
+### Twitch API resources
+
+* [New Twitch API](https://dev.twitch.tv/docs/api)
+* [Kraken V5 API](https://dev.twitch.tv/docs/v5)
+* [TMI Client](https://www.tmijs.org)
