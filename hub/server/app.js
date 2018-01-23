@@ -7,6 +7,7 @@ const express = require( "express" );
 const WebSocketServer = require( "websocket" ).server;
 const bodyParser = require( "body-parser" );
 const request = require( "request-promise" );
+const crypto = require( "crypto" );
 const lager = require( "properjs-lager" );
 const slacker = require( "properjs-slacker" );
 
@@ -33,22 +34,18 @@ app.init = () => {
     });
 
     // Slack notification that server is up
-    slacker(
-        config.hub.slackToken,
-        config.hub.slackWebhook,
-        config.hub.slackChannel,
-        config.hub.slackContext,
-        ["HUB server up..."]
-    );
+    app.slackit( ["HUB server up..."] );
 };
 app.slackit = ( message ) => {
-    slacker(
-        config.hub.slackToken,
-        config.hub.slackWebhook,
-        config.hub.slackChannel,
-        config.hub.slackContext,
-        message
-    );
+    if ( !app.dev ) {
+        slacker(
+            config.hub.slackToken,
+            config.hub.slackWebhook,
+            config.hub.slackChannel,
+            config.hub.slackContext,
+            message
+        );
+    }
 };
 app.broadcast = ( event, data ) => {
     if ( app.connection ) {
@@ -73,8 +70,8 @@ app.broadcast = ( event, data ) => {
     }
 };
 app.unsub = () => {
-    for ( const topic in app.subs ) {
-        app.pubsub( app.subs[ topic ].topic, "unsubscribe", app.subs[ topic ].params );
+    for ( const topicUrl in app.subs ) {
+        app.pubsub( app.subs[ topicUrl ].topic, "unsubscribe", app.subs[ topicUrl ].params );
     }
 };
 app.pubsub = ( topic, mode, params ) => {
@@ -84,8 +81,22 @@ app.pubsub = ( topic, mode, params ) => {
         query.push( `${param}=${params[ param ]}` );
     }
 
-    if ( !app.subs[ topic ] && mode === "subscribe" ) {
-        app.subs[ topic ] = { topic, mode, params };
+    // Unique secret generated for each topic subscription
+    const topicUrl = `https://api.twitch.tv/helix/${topic}?${query.join( "&" )}`;
+    const secret = crypto
+                    .createHmac( "sha256", config.hub.secret )
+                    .update( topicUrl )
+                    .digest( "hex" );
+
+    // Only push unique subscriptions
+    // Using the hub.topic we can look this up later on POSTs from Twitch
+    if ( !app.subs[ topicUrl ] && mode === "subscribe" ) {
+        app.subs[ topicUrl ] = {
+            topic,
+            mode,
+            params,
+            secret
+        };
     }
 
     request({
@@ -95,30 +106,38 @@ app.pubsub = ( topic, mode, params ) => {
         body: {
             "hub.callback": `${config.hub.url}/shub`,
             "hub.mode": mode,
-            "hub.topic": `https://api.twitch.tv/helix/${topic}?${query.join( "&" )}`,
-            "hub.secret": config.hub.secret,
+            "hub.topic": topicUrl,
+            "hub.secret": secret,
             "hub.lease_seconds": config.hub.lease
         },
         headers: {
             "Client-ID": config.all.clientId,
         }
-
-    }).then(( response ) => {
-        lager.info( "TWITCH HUB RESPONSE" );
-        console.log( response );
     });
-}
+};
+app.rawbody = ( req, res, buf, encoding ) => {
+    if ( buf && buf.length ) {
+        req.rawBody = buf.toString( encoding || "utf8" );
+        req.rawBuf = buf;
+    }
+};
 
 
 
 // {app} Express app
 app.express = express();
 app.express.use( bodyParser.json({
-    limit: "100mb"
+    verify: app.rawbody
 }));
 app.express.use( bodyParser.urlencoded({
-    limit: "100mb",
+    verify: app.rawbody,
     extended: true
+}));
+app.express.use( bodyParser.raw({
+    verify: app.rawbody,
+    type: function () {
+        return true;
+    }
 }));
 
 
@@ -127,25 +146,37 @@ app.express.get( "/", ( req, res ) => {
     res.send( "fuk you" );
 });
 app.express.get( "/shub", ( req, res ) => {
-    lager.server( "GET SHUB" );
-
     const message = ["HUB /shub GET"];
 
     for ( const id in req.body.data ) {
         message.push( `${id}: ${req.body.data[ id ]}` );
     }
 
+    lager.server( "GET SHUB" );
     app.slackit( message );
 
     res.status( 200 ).send( req.query[ "hub.challenge" ] );
 });
 app.express.post( "/shub", ( req, res ) => {
-    if ( app.ids.indexOf( req.body.id ) === -1 ) {
+    // Verify the request using the secret we sent upon subscription
+    const signature = req.headers[ "x-hub-signature" ].split( "=" )[ 1 ];
+    const storedSign = crypto
+                        .createHmac( "sha256", app.subs[ req.body.topic ].secret )
+                        .update( JSON.stringify( req.body ) )
+                        .digest( "hex" );
+
+    // This is an invalid POST so handle that...
+    if ( signature !== storedSign ) {
+        lager.server( "POST SHUB INVALID SIGNATURE" );
+        app.slackit([
+            "HUB /shub POST Invalid X-Hub-Signature",
+            `Received: ${signature}`,
+            `Stored: ${storedSign}`
+        ]);
+
+    // This is a valid POST but ignore same ID notifications
+    } else if ( app.ids.indexOf( req.body.id ) === -1 ) {
         app.ids.push( req.body.id );
-
-        app.broadcast( "shub", req.body.data );
-
-        lager.server( "POST SHUB" );
 
         const message = ["HUB /shub POST", `Topic: ${req.body.topic}`];
 
@@ -153,10 +184,12 @@ app.express.post( "/shub", ( req, res ) => {
             message.push( `${id}: ${req.body.data[ id ]}` );
         }
 
+        lager.server( "POST SHUB" );
         app.slackit( message );
+        app.broadcast( "shub", req.body.data );
 
     } else {
-        lager.server( "POST SHUB SKIPPED" );
+        lager.server( "POST SHUB SKIPPED ON ID" );
     }
 
     res.status( 200 ).send( req.query[ "hub.challenge" ] );
