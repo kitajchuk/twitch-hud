@@ -34,7 +34,7 @@ app.init = () => {
     });
 
     // Slack notification that server is up
-    app.slackit( ["HUB server up..."] );
+    // app.slackit( ["HUB server up..."] );
 };
 app.slackit = ( message ) => {
     if ( !app.dev ) {
@@ -215,7 +215,7 @@ app.websocketserver.on( "request", ( request ) => {
     if ( request.httpRequest.headers["client-id"] === config.all.clientId ) {
         request.accept( "echo-protocol", request.origin );
 
-        app.slackit( ["HUB socketserver requested by client..."] );
+        // app.slackit( ["HUB socketserver requested by client..."] );
     }
 });
 app.websocketserver.on( "connect", ( connection ) => {
@@ -223,12 +223,12 @@ app.websocketserver.on( "connect", ( connection ) => {
 
     app.connection = connection;
 
-    app.slackit( ["HUB socketserver connected to client..."] );
+    // app.slackit( ["HUB socketserver connected to client..."] );
 });
 app.websocketserver.on( "close", () => {
     lager.cache( `[socketserver] closed` );
 
-    app.slackit( ["HUB socketserver disconnected from client..."] );
+    // app.slackit( ["HUB socketserver disconnected from client..."] );
 });
 
 
