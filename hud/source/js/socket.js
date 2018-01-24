@@ -40,6 +40,9 @@ const socket = {
 
             } else if ( response.event === "fairyCounter" ) {
                 fairies.counter( response.data );
+
+            } else if ( response.event === "heartCounter" ) {
+                hearts.counter( response.data );
             }
         };
         this.websocket.onopen = () => {

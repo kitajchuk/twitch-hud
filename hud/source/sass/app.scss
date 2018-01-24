@@ -29,10 +29,10 @@ body {
 
 body.dev {
     background-color: $black;
-    background-size: cover;
-    background-image: url( "/img/botwimage.jpeg" );
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
+    // background-size: cover;
+    // background-image: url( "/img/botwimage.jpeg" );
+    // background-position: 50% 50%;
+    // background-repeat: no-repeat;
 }
 
 
@@ -177,11 +177,6 @@ body.dev {
     height: 38px;
     position: relative;
     width: 38px;
-    transition: opacity $duration ease;
-
-    &.slashed {
-        opacity: 0;
-    }
 
     span {
         background-color: $red;
@@ -190,7 +185,14 @@ body.dev {
         position: absolute;
         top: 50%;
         transform: translate3d( -50%, -50%, 0 );
+        transition: background-color $duration ease;
         width: 28px;
+    }
+
+    &.slashed {
+        span {
+            background-color: $black075;
+        }
     }
 }
 
@@ -237,15 +239,17 @@ body.dev {
 
 
 /******************************************************************************
- * HUD Timer
+ * HUD Timers
 *******************************************************************************/
-.hud__counter {
+.hud__fairy__counter {
     bottom: 0;
+    position: fixed;
+    right: 0;
+    transform: translate3d( -$marginHorz, -$marginVert * 2.5, 0 );
+}
+.hud__heart__counter {
     left: 0;
     position: fixed;
-    transform: translate3d( $marginHorz, -$marginVert, 0 );
-
-    span {
-        color: $yellow;
-    }
+    top: 0;
+    transform: translate3d( $marginHorz, $marginVert * 3.5, 0 );
 }

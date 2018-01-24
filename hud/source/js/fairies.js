@@ -1,6 +1,7 @@
 import $ from "properjs-hobo";
 import socket from "./socket";
 import fairiesView from "./views/fairies";
+import utils from "./utils";
 
 
 
@@ -22,19 +23,8 @@ const fairies = {
         this.fairies = this.fairyBox.find( ".js-hud-fairies-container" );
     },
 
-    formatTime ( time ) {
-        const minutes = parseInt( time / (1000 * 60), 10 );
-        let seconds = parseInt( time / 1000, 10) % 60;
-
-        if ( seconds < 10 ) {
-            seconds = `0${seconds}`;
-        }
-
-        return `${minutes}:${seconds}`;
-    },
-
     counter ( data ) {
-        this.fairyCounter[ 0 ].innerHTML = `${this.formatTime( data.time )} <span>${data.message}</span>`;
+        this.fairyCounter[ 0 ].innerHTML = `<span class="${data.bool ? 'green' : 'red'}">${utils.formatTime( data.time )}</span>`;
     },
 
     pipe ( data ) {

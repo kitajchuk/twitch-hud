@@ -1,12 +1,14 @@
 import $ from "properjs-hobo";
 import socket from "./socket";
 import heartsView from "./views/hearts";
+import utils from "./utils";
 
 
 
 const hearts = {
     init () {
         this.heartBox = $( ".js-hud-hearts" );
+        this.heartCounter = $( ".js-hud-heart-counter" );
         this.hearts = null;
         this.data = null;
 
@@ -18,6 +20,10 @@ const hearts = {
     render () {
         this.heartBox[ 0 ].innerHTML = heartsView( this.data );
         this.hearts = this.heartBox.find( ".js-hud-hearts-container" );
+    },
+
+    counter ( data ) {
+        this.heartCounter[ 0 ].innerHTML = `<span class="yellow">${utils.formatTime( data.time )}</span>`;
     },
 
     pipe ( data ) {
