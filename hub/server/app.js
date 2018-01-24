@@ -32,9 +32,6 @@ app.init = () => {
     app.pubsub( "users/follows", "subscribe", {
         to_id: config.all.userId
     });
-
-    // Slack notification that server is up
-    // app.slackit( ["HUB server up..."] );
 };
 app.slackit = ( message ) => {
     if ( !app.dev ) {
@@ -146,14 +143,14 @@ app.express.get( "/", ( req, res ) => {
     res.send( "fuk you" );
 });
 app.express.get( "/shub", ( req, res ) => {
-    const message = ["HUB /shub GET"];
+    const message = ["Log: Twitch :GET /shub"];
 
     for ( const id in req.body.data ) {
         message.push( `${id}: ${req.body.data[ id ]}` );
     }
 
-    lager.server( "GET SHUB" );
-    app.slackit( message );
+    lager.server( "Log: Twitch :GET /shub" );
+        app.slackit( message );
 
     res.status( 200 ).send( req.query[ "hub.challenge" ] );
 });
@@ -162,34 +159,34 @@ app.express.post( "/shub", ( req, res ) => {
     const signature = req.headers[ "x-hub-signature" ].split( "=" )[ 1 ];
     const storedSign = crypto
                         .createHmac( "sha256", app.subs[ req.body.topic ].secret )
-                        .update( JSON.stringify( req.body ) )
+                        .update( req.rawBody )
                         .digest( "hex" );
 
     // This is an invalid POST so handle that...
     if ( signature !== storedSign ) {
-        lager.server( "POST SHUB INVALID SIGNATURE" );
-        app.slackit([
-            "HUB /shub POST Invalid X-Hub-Signature",
-            `Received: ${signature}`,
-            `Stored: ${storedSign}`
-        ]);
+        lager.error( "Error: Twitch :POST /shub has invalid X-Hub-Signature" );
+            app.slackit([
+                "Error: Twitch :POST /shub has invalid X-Hub-Signature",
+                `Received: ${signature}`,
+                `Stored: ${storedSign}`
+            ]);
 
-    // This is a valid POST but ignore same ID notifications
+    // This is a valid POST but ignore repeat ID notifications
     } else if ( app.ids.indexOf( req.body.id ) === -1 ) {
         app.ids.push( req.body.id );
 
-        const message = ["HUB /shub POST", `Topic: ${req.body.topic}`];
+        const message = [`Log: Twitch :POST /shub topic ${req.body.topic}`];
 
         for ( const id in req.body.data ) {
             message.push( `${id}: ${req.body.data[ id ]}` );
         }
 
-        lager.server( "POST SHUB" );
-        app.slackit( message );
-        app.broadcast( "shub", req.body.data );
+        lager.server( `Log: Twitch :POST /shub topic ${req.body.topic}` );
+            app.slackit( message );
+            app.broadcast( "shub", req.body.data );
 
     } else {
-        lager.server( "POST SHUB SKIPPED ON ID" );
+        lager.server( `Log: Twitch :POST /shub skipped id ${req.body.id}` );
     }
 
     res.status( 200 ).send( req.query[ "hub.challenge" ] );
@@ -210,25 +207,35 @@ app.websocketserver = new WebSocketServer({
 app.websocketserver.on( "request", ( request ) => {
     lager.cache( `[socketserver] requested ${request.origin}` );
 
-    // console.log( request.httpRequest.headers );
+    // Verify the request using the secret that should have been sent
+    const signature = request.httpRequest.headers["x-hud-signature"].split( "=" )[ 1 ];
+    const storedSign = crypto
+                        .createHmac( "sha256", config.hud.secret )
+                        .update( request.origin )
+                        .digest( "hex" )
 
-    if ( request.httpRequest.headers["client-id"] === config.all.clientId ) {
-        request.accept( "echo-protocol", request.origin );
+    // This is an invalid request to connect so handle that...
+    if ( signature !== storedSign ) {
+        lager.error( "Error: Socket request has invalid X-Hud-Signature" );
+            app.slackit([
+                "Error: Socket request has invalid X-Hud-Signature",
+                `Received: ${signature}`,
+                `Stored: ${storedSign}`
+            ]);
+            request.reject();
 
-        // app.slackit( ["HUB socketserver requested by client..."] );
+    } else {
+        lager.server( "Log: Socket connected with valid X-Hud-Signature" );
+            request.accept( "echo-protocol", request.origin );
     }
 });
 app.websocketserver.on( "connect", ( connection ) => {
     lager.cache( `[socketserver] connected` );
 
     app.connection = connection;
-
-    // app.slackit( ["HUB socketserver connected to client..."] );
 });
 app.websocketserver.on( "close", () => {
     lager.cache( `[socketserver] closed` );
-
-    // app.slackit( ["HUB socketserver disconnected from client..."] );
 });
 
 
@@ -241,7 +248,7 @@ process.on( "SIGINT", () => {
     // Save the IDs from Twitch, cause idk yet...
     files.write( path.join( __dirname, "data", "ids.json" ), app.ids, true );
 
-    console.log( "SIGINT process going down" );
+    lager.error( "SIGINT process terminated" );
 
     process.exit( 0 );
 });

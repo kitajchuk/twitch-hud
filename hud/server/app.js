@@ -8,6 +8,7 @@ const request = require( "request-promise" );
 const express = require( "express" );
 const WebSocketServer = require( "websocket" ).server;
 const WebSocketClient = require( "websocket" ).client;
+const crypto = require( "crypto" );
 
 // Load lib
 const files = require( "../../files" );
@@ -135,7 +136,9 @@ app.websocketserver = new WebSocketServer({
 app.websocketserver.on( "request", ( request ) => {
     lager.cache( `[socketserver] requested ${request.origin}` );
 
-    request.accept( "echo-protocol", request.origin );
+    if ( request.origin === config.hud.url ) {
+        request.accept( "echo-protocol", request.origin );
+    }
 });
 app.websocketserver.on( "connect", ( connection ) => {
     lager.cache( `[socketserver] connected` );
@@ -185,7 +188,10 @@ app.websocketclient.connect(
     "echo-protocol",
     config.hud.url,
     {
-        "Client-ID": config.all.clientId
+        "X-Hud-Signature": `sha256=${crypto
+                            .createHmac( "sha256", config.hud.secret )
+                            .update( config.hud.url )
+                            .digest( "hex" )}`
     }
 );
 
