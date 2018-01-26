@@ -7,9 +7,6 @@ module.exports = {
     // https://www.npmjs.com/package/twitch-helix
     helix: require( "./helix" ),
 
-    // https://dev.twitch.tv/docs/v5
-    kraken: require( "./kraken" ),
-
     // Data store in memo
     memo: {}
 };

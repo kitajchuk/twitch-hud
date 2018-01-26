@@ -89,6 +89,9 @@ body.dev {
         font-family: "Calamity-Bold";
         font-size: 28px;
     }
+    h2, h3, h4, h5, h6 {
+        font-size: 24px;
+    }
 
     .mono {
         font-family: monospace;
@@ -245,6 +248,10 @@ body.dev {
 }
 .hud__fairy__counter {}
 .hud__heart__counter {}
+.hud__subs,
+.hud__follows {
+    padding-top: $marginHorz;
+}
 
 
 

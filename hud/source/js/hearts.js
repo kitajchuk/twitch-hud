@@ -1,6 +1,5 @@
 import $ from "properjs-hobo";
 import socket from "./socket";
-import heartsView from "./views/hearts";
 import utils from "./utils";
 
 
@@ -18,7 +17,17 @@ const hearts = {
     },
 
     render () {
-        this.heartBox[ 0 ].innerHTML = heartsView( this.data );
+        const html = [];
+
+        while ( html.length < this.data.hearts.max ) {
+            html.push(`
+                <div class="hud__hearts__container js-hud-hearts-container">
+                    <span></span>
+                </div>
+            `);
+        }
+
+        this.heartBox[ 0 ].innerHTML = html.join( "" );
         this.hearts = this.heartBox.find( ".js-hud-hearts-container" );
     },
 

@@ -13,7 +13,6 @@
 
 // Load registry
 const tmi = require( "tmi.js" );
-const request = require( "request-promise" );
 
 
 

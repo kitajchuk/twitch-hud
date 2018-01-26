@@ -1,6 +1,5 @@
 import $ from "properjs-hobo";
 import socket from "./socket";
-import fairiesView from "./views/fairies";
 import utils from "./utils";
 
 
@@ -19,7 +18,17 @@ const fairies = {
     },
 
     render () {
-        this.fairyBox[ 0 ].innerHTML = fairiesView( this.data );
+        const html = [];
+
+        while ( html.length < this.data.fairies.max ) {
+            html.push(`
+                <div class="hud__fairies__container js-hud-fairies-container">
+                    <span></span>
+                </div>
+            `);
+        }
+
+        this.fairyBox[ 0 ].innerHTML = html.join( "" );
         this.fairies = this.fairyBox.find( ".js-hud-fairies-container" );
     },
 

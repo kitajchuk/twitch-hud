@@ -96,7 +96,6 @@ app.oauth = ( req, res, next ) => {
     } else {
         twitch.tmi.init( app );
         twitch.helix.init( app );
-        twitch.kraken.init( app );
 
         next();
     }

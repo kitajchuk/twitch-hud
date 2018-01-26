@@ -2,6 +2,8 @@ import alert from "./alert";
 import hearts from "./hearts";
 import fairies from "./fairies";
 import audio from "./audio";
+import follows from "./follows";
+import subs from "./subs";
 
 
 
@@ -35,6 +37,12 @@ const socket = {
             } else if ( response.event === "fairies" ) {
                 fairies.pipe( response.data );
 
+            } else if ( response.event === "follows" ) {
+                follows.pipe( response.data );
+
+            } else if ( response.event === "subs" ) {
+                subs.pipe( response.data );
+
             } else if ( response.event === "fairyCounter" ) {
                 fairies.counter( response.data );
 
@@ -47,6 +55,8 @@ const socket = {
             window.app.alert = alert.init();
             window.app.hearts = hearts.init();
             window.app.fairies = fairies.init();
+            window.app.follows = follows.init();
+            window.app.subs = subs.init();
         };
         this.websocket.onclose = () => {};
     }
