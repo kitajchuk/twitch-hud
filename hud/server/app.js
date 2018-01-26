@@ -29,6 +29,7 @@ app.twitch = twitch;
 app.prompt = prompt;
 app.lager = lager;
 app.config = config;
+app.connections = [];
 app.init = () => {
     // Initialize commands
     app.commands.forEach(( command ) => {
@@ -59,11 +60,13 @@ app.runCommand = ( comm, message ) => {
     });
 };
 app.broadcast = ( event, data ) => {
-    if ( app.connection ) {
-        app.connection.send(JSON.stringify({
-            event,
-            data
-        }));
+    if ( app.connections.length ) {
+        app.connections.forEach(( connection ) => {
+            connection.send(JSON.stringify({
+                event,
+                data
+            }));
+        });
     }
 };
 app.oauth = ( req, res, next ) => {
@@ -114,7 +117,7 @@ app.express.use( express.static( path.join( __dirname, "../public" ) ) );
 // {app} Express routes
 app.express.get( "/", app.oauth, ( req, res ) => {
     const data = {
-        dev: app.dev
+        dev: app.dev || req.query.dev
     };
 
     res.render( "index", data );
@@ -142,7 +145,7 @@ app.websocketserver.on( "request", ( request ) => {
 app.websocketserver.on( "connect", ( connection ) => {
     lager.cache( `[socketserver] connected` );
 
-    app.connection = connection;
+    app.connections.push( connection );
 
     connection.on( "message", ( message ) => {
         // { event, data }

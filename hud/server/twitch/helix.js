@@ -76,7 +76,7 @@ module.exports = {
             }).sort(( a, b ) => {
                 return (new Date( b.created_at ) - new Date( a.created_at ));
 
-            }).slice( 0, 5 );
+            }).slice( 0, 3 );
 
             this.app.broadcast(
                 "subs",
@@ -89,7 +89,7 @@ module.exports = {
     getFollows () {
         this.api.sendHelixRequest( `users/follows?to_id=${this.app.config.all.userId}` )
             .then(( follows ) => {
-                const recent = follows.slice( 0, 5 );
+                const recent = follows.slice( 0, 3 );
                 const query = [];
 
                 recent.forEach(( follow ) => {
