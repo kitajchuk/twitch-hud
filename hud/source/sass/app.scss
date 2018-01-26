@@ -169,7 +169,6 @@ body.dev {
     position: fixed;
     top: 0;
     transform: translate3d( $marginHorz, $marginVert, 0 );
-    // width: 342px;
 }
 .hud__hearts__container {
     display: inline-block;
@@ -264,4 +263,28 @@ body.dev {
     position: fixed;
     visibility: hidden;
     width: 100%;
+}
+
+
+
+/******************************************************************************
+ * HUD Rupees
+*******************************************************************************/
+.hud__rupees {
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: translate3d( -$marginHorz, $marginVert, 0 );
+}
+.hud__rupees__icon {
+    background-color: $black02;
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    transition: background-color $duration ease;
+    vertical-align: middle;
+}
+.hud__rupees__cheer {
+    display: inline-block;
+    vertical-align: middle;
 }

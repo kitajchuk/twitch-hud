@@ -28,10 +28,35 @@ module.exports = {
             clientId: this.app.config.all.clientId,
             clientSecret: this.app.config.all.clientSecret
         });
+        this.getCheer();
         this.getSubs();
         this.getFollows();
 
         this.app.lager.server( `[${this.name}] utility initialized` );
+    },
+    getCheer () {
+        request({
+            url: `https://api.twitch.tv/bits/channels/${this.app.config.all.userId}/events/recent`,
+            json: true,
+            method: "GET",
+            headers: {
+                "Accept": this.app.config.all.accept,
+                "Authorization": `OAuth ${this.app.twitch.memo.oauth.access_token}`,
+                "Client-ID": this.app.config.all.clientId
+            }
+
+        }).then(( data ) => {
+            if ( data.top.username && data.top.amount ) {
+                this.app.broadcast(
+                    "topcheer",
+                    {
+                        bits: data.top.amount,
+                        color: data.top.tags.color,
+                        username: data.top.username
+                    }
+                );
+            }
+        });
     },
     getSubs () {
         request({

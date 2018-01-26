@@ -163,6 +163,8 @@ module.exports = {
             this.app.lager.info( "cheer userstate object >>>" );
 
             this.alertCheer( userstate, message );
+
+            this.app.twitch.helix.getCheer();
         });
     },
     alertCheer ( userstate, message ) {
