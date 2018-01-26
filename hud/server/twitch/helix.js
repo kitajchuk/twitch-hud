@@ -46,7 +46,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
-            alertType: "follow",
+            audioHit: "smallItem",
             alertHtml: alertHtml
         });
     }

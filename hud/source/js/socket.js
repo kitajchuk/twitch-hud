@@ -27,7 +27,7 @@ const socket = {
             // HUD::events
             if ( response.event === "alert" ) {
                 alert.push( response.data );
-                audio.play( response.data.alertType === "heartThief" ? "scream" : "heart" );
+                audio.play( response.data.audioHit );
 
             } else if ( response.event === "hearts" ) {
                 hearts.pipe( response.data );
@@ -49,8 +49,6 @@ const socket = {
             window.app.fairies = fairies.init();
         };
         this.websocket.onclose = () => {};
-
-        // window.onload = () => {};
     }
 };
 

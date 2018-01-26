@@ -38,7 +38,7 @@ module.exports = {
             `;
 
             this.app.broadcast( "alert", {
-                alertType: "heartThief",
+                audioHit: "scream1",
                 alertHtml: alertHtml
             });
 
@@ -79,7 +79,7 @@ module.exports = {
             `;
 
             this.app.broadcast( "alert", {
-                alertType: "heartTimeout",
+                audioHit: "scream2",
                 alertHtml: alertHtml
             });
 

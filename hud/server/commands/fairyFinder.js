@@ -44,12 +44,14 @@ module.exports = {
                     const hit = Math.floor( Math.random() * (this.maxHit - this.minHit + 1) ) + this.minHit;
                     const num = 1;
 
-                    this.users[ userstate.username ] = true;
+                    if ( !this.app.dev ) {
+                        this.users[ userstate.username ] = true;
 
-                    setTimeout(() => {
-                        delete this.users[ userstate.username ];
+                        setTimeout(() => {
+                            delete this.users[ userstate.username ];
 
-                    }, this.throttle );
+                        }, this.throttle );
+                    }
 
                     if ( hit > this.hitPercent ) {
                         this.app.data.fairies.value += num;
@@ -61,7 +63,7 @@ module.exports = {
                         `;
 
                         this.app.broadcast( "alert", {
-                            alertType: "fairyFinder",
+                            audioHit: "greatFairyLaugh1",
                             alertHtml: alertHtml
                         });
 
@@ -77,7 +79,7 @@ module.exports = {
                 }
 
             } else {
-                this.app.twitch.tmi.emitBot( `@${userstate.username} Check the timer on the lower right and try again in a bit...` );
+                this.app.twitch.tmi.emitBot( `@${userstate.username} You can't catch a fairy right now, keep an eye on the timer :)` );
             }
         });
     },

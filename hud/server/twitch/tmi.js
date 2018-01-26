@@ -113,7 +113,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
-            alertType: "host",
+            audioHit: "goldSkulltula",
             alertHtml: alertHtml
         });
     },
@@ -133,7 +133,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
-            alertType: "sub",
+            audioHit: "heartContainer",
             alertHtml: alertHtml
         });
     },
@@ -153,7 +153,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
-            alertType: "resub",
+            audioHit: "magicRefill",
             alertHtml: alertHtml
         });
     },
@@ -173,7 +173,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
-            alertType: "cheer",
+            audioHit: "item",
             alertHtml: alertHtml
         });
     }

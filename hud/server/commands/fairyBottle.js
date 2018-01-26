@@ -39,7 +39,7 @@ module.exports = {
                 `;
 
                 this.app.broadcast( "alert", {
-                    alertType: "fairyBottle",
+                    audioHit: "fairy",
                     alertHtml: alertHtml
                 });
 

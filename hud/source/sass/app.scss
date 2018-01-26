@@ -235,20 +235,16 @@ body.dev {
 
 
 /******************************************************************************
- * HUD Timers
+ * HUD Sidebar
 *******************************************************************************/
-.hud__fairy__counter {
-    left: 0;
-    position: fixed;
-    top: 0;
-    transform: translate3d( $marginHorz, $marginVert * 3.5, 0 );
-}
-.hud__heart__counter {
+.hud__sidebar {
     left: 0;
     position: fixed;
     top: 0;
     transform: translate3d( $marginHorz, $marginVert * 2.5, 0 );
 }
+.hud__fairy__counter {}
+.hud__heart__counter {}
 
 
 
