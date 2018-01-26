@@ -113,6 +113,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
+            alertType: "host",
             alertHtml: alertHtml
         });
     },
@@ -132,6 +133,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
+            alertType: "sub",
             alertHtml: alertHtml
         });
     },
@@ -151,6 +153,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
+            alertType: "resub",
             alertHtml: alertHtml
         });
     },
@@ -170,6 +173,7 @@ module.exports = {
         `;
 
         this.app.broadcast( "alert", {
+            alertType: "cheer",
             alertHtml: alertHtml
         });
     }

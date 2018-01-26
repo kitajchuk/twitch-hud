@@ -1,7 +1,7 @@
 import alert from "./alert";
 import hearts from "./hearts";
 import fairies from "./fairies";
-import chat from "./chat";
+import audio from "./audio";
 
 
 
@@ -24,13 +24,10 @@ const socket = {
         this.websocket.onmessage = ( message ) => {
             const response = JSON.parse( message.data );
 
-            // Chat
-            if ( response.event === "chat" ) {
-                console.log( response );
-
             // HUD::events
-            } else if ( response.event === "alert" ) {
+            if ( response.event === "alert" ) {
                 alert.push( response.data );
+                audio.play( response.data.alertType === "heartThief" ? "scream" : "heart" );
 
             } else if ( response.event === "hearts" ) {
                 hearts.pipe( response.data );
@@ -46,7 +43,7 @@ const socket = {
             }
         };
         this.websocket.onopen = () => {
-            window.app.chat = chat.init();
+            window.app.audio = audio.init();
             window.app.alert = alert.init();
             window.app.hearts = hearts.init();
             window.app.fairies = fairies.init();

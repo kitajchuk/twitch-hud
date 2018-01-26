@@ -19,6 +19,7 @@
 # Dev
 hud/public/js
 hud/public/css
+hud/public/media
 me.json
 ids.json
 config.js

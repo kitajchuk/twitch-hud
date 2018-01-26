@@ -39,6 +39,7 @@ module.exports = {
                 `;
 
                 this.app.broadcast( "alert", {
+                    alertType: "fairyBottle",
                     alertHtml: alertHtml
                 });
 

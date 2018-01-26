@@ -61,6 +61,7 @@ module.exports = {
                         `;
 
                         this.app.broadcast( "alert", {
+                            alertType: "fairyFinder",
                             alertHtml: alertHtml
                         });
 

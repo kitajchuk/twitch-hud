@@ -51,14 +51,6 @@ app.broadcast = ( event, data ) => {
             data
         }));
 
-        const message = [];
-
-        for ( const id in data ) {
-            message.push( `${id}: ${data[ id ]}` );
-        }
-
-        app.slackit( message );
-
     } else {
         lager.data({
             event,
