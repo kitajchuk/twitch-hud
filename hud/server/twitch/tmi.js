@@ -45,7 +45,7 @@ module.exports = {
             },
             identity: {
                 username: this.app.config.all.userName,
-                password: this.app.twitch.memo.oauth.access_token
+                password: this.app.config.all.userToken
             },
             channels: [this.app.config.all.userChannel]
         });

@@ -34,18 +34,44 @@ module.exports = {
 
         this.app.lager.server( `[${this.name}] utility initialized` );
     },
-    getCheer () {
-        request({
-            url: `https://api.twitch.tv/bits/channels/${this.app.config.all.userId}/events/recent`,
-            json: true,
-            method: "GET",
-            headers: {
-                "Accept": this.app.config.all.accept,
-                "Authorization": `OAuth ${this.app.twitch.memo.oauth.access_token}`,
-                "Client-ID": this.app.config.all.clientId
-            }
+    getReq ( url, method ) {
+        return new Promise(( resolve, reject ) => {
+            // Use local method so we can resolve original Promise if we need to reauthenticate
+            const _getReq = () => {
+                request({
+                    url,
+                    json: true,
+                    method,
+                    headers: {
+                        "Accept": this.app.config.all.accept,
+                        "Authorization": `OAuth ${this.app.twitch.memo.oauth.access_token}`,
+                        "Client-ID": this.app.config.all.clientId
+                    },
 
-        }).then(( data ) => {
+                }).then(( response ) => {
+                    resolve( response );
+
+                }).catch(( response ) => {
+                    // Need to handle token refreshes
+                    // https://dev.twitch.tv/docs/authentication#refreshing-access-tokens
+                    // Funnel through the refresh process and then redo the request and resolve
+                    if ( response.response.headers["www-authenticate"] ) {
+                        this.app.refresh().then(() => {
+                            _getReq();
+                        });
+                    }
+                });
+            };
+
+            _getReq();
+        });
+    },
+    getCheer () {
+        this.getReq(
+            `https://api.twitch.tv/bits/channels/${this.app.config.all.userId}/events/recent`,
+            "GET"
+
+        ).then(( data ) => {
             if ( data.top.username && data.top.amount ) {
                 this.app.broadcast(
                     "topcheer",
@@ -59,18 +85,13 @@ module.exports = {
         });
     },
     getSubs () {
-        request({
-            url: `https://api.twitch.tv/kraken/channels/${this.app.config.all.userId}/subscriptions`,
-            json: true,
-            method: "GET",
-            headers: {
-                "Accept": this.app.config.all.accept,
-                "Authorization": `OAuth ${this.app.twitch.memo.oauth.access_token}`,
-                "Client-ID": this.app.config.all.clientId
-            }
+        this.getReq(
+            `https://api.twitch.tv/kraken/channels/${this.app.config.all.userId}/subscriptions`,
+            "GET"
 
-        }).then(( data ) => {
+        ).then(( data ) => {
             const subs = data.subscriptions.filter(( sub ) => {
+                // Filter out me, @kitajchuk
                 return (sub.user._id !== this.app.config.all.userId);
 
             }).sort(( a, b ) => {
@@ -89,7 +110,11 @@ module.exports = {
     getFollows () {
         this.api.sendHelixRequest( `users/follows?to_id=${this.app.config.all.userId}` )
             .then(( follows ) => {
-                const recent = follows.slice( 0, 3 );
+                const recent = follows.filter(( follow ) => {
+                    // Filter out my bot, @kitajchukbot
+                    return (follow.from_id !== this.app.config.all.botId);
+
+                }).slice( 0, 3 );
                 const query = [];
 
                 recent.forEach(( follow ) => {

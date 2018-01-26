@@ -1,5 +1,5 @@
 import $ from "properjs-hobo";
-import socket from "./socket";
+// import socket from "./socket";
 import utils from "./utils";
 
 
@@ -11,7 +11,7 @@ const hearts = {
         this.hearts = null;
         this.data = null;
 
-        socket.emit( "hearts" );
+        // socket.emit( "hearts" );
 
         return this;
     },

@@ -15,6 +15,7 @@ const files = require( "../../files" );
 const config = require( "../../config" );
 const prompt = require( "./prompt" );
 const twitch = require( "./twitch/index" );
+const oauthFile = path.join( __dirname, "oauth.json" );
 
 // This {app}
 const app = {};
@@ -22,7 +23,7 @@ const app = {};
 
 
 // {app} Config
-app.data = files.read( path.join( __dirname, "data", "data.json" ), true );
+app.data = require( "./data" );
 app.dev = (process.argv.pop() === "dev" ? true : false);
 app.commands = require( "./commands/index" );
 app.twitch = twitch;
@@ -69,14 +70,47 @@ app.broadcast = ( event, data ) => {
         });
     }
 };
+app.refresh = () => {
+    return new Promise(( resolve, reject ) => {
+        request({
+            url: config.all.tokenUrl,
+            json: true,
+            method: "POST",
+            form: {
+                client_id: config.all.clientId,
+                client_secret: config.all.clientSecret,
+                grant_type: "refresh_token",
+                refresh_token: twitch.memo.oauth.refresh_token
+            }
+
+        }).then(( json ) => {
+            twitch.memo.oauth = json;
+
+            files.write( oauthFile, json, true );
+
+            resolve();
+        });
+    });
+};
 app.oauth = ( req, res, next ) => {
+    // Try local oauth
+    const oauthJson = files.read( oauthFile, true );
+
+    // 0.0 Authorized
+    if ( oauthJson.access_token ) {
+        twitch.memo.oauth = oauthJson;
+        twitch.tmi.init( app );
+        twitch.helix.init( app );
+
+        next();
+
     // 0.1 Authorization
-    if ( !req.query.code && !twitch.memo.oauth ) {
+    } else if ( !req.query.code ) {
         // https://dev.twitch.tv/docs/v5/guides/authentication/#oauth-authorization-code-flow-user-access-tokens
         res.redirect( `${config.all.oauthUrl}?client_id=${config.all.clientId}&redirect_uri=${config.hud.url}&response_type=code&scope=${config.all.scope}` );
 
     // 0.2 Token Request
-    } else if ( req.query.code && !twitch.memo.oauth ) {
+    } else if ( req.query.code ) {
         request({
             url: config.all.tokenUrl,
             json: true,
@@ -89,18 +123,13 @@ app.oauth = ( req, res, next ) => {
                 redirect_uri: config.hud.url
             }
 
-        }, ( error, response, oauthJson ) => {
-            twitch.memo.oauth = oauthJson;
+        }).then(( json ) => {
+            twitch.memo.oauth = json;
+
+            files.write( oauthFile, json, true );
 
             res.redirect( "/" );
         });
-
-    // 0.4 Authorized
-    } else {
-        twitch.tmi.init( app );
-        twitch.helix.init( app );
-
-        next();
     }
 };
 
@@ -147,24 +176,24 @@ app.websocketserver.on( "connect", ( connection ) => {
 
     app.connections.push( connection );
 
+    app.broadcast( "hearts", {
+        hearts: app.data.hearts
+    });
+    app.broadcast( "fairies", {
+        fairies: app.data.fairies
+    });
+
     connection.on( "message", ( message ) => {
         // { event, data }
-        const utf8Data = JSON.parse( message.utf8Data );
-
-        if ( utf8Data.event === "hearts" ) {
-            app.broadcast( "hearts", {
-                hearts: app.data.hearts
-            });
-
-        } else if ( utf8Data.event === "fairies" ) {
-            app.broadcast( "fairies", {
-                fairies: app.data.fairies
-            });
-        }
+        // const utf8Data = JSON.parse( message.utf8Data );
     });
 });
-app.websocketserver.on( "close", () => {
+app.websocketserver.on( "close", ( connection ) => {
     lager.cache( `[socketserver] closed` );
+
+    app.connections.splice( app.connections.indexOf( connection ), 1 );
+
+    lager.info( `app.connections.length: ${app.connections.length}` );
 });
 
 
