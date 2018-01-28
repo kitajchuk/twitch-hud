@@ -21,6 +21,7 @@ hud/public/js
 hud/public/css
 hud/public/media
 hud/server/oauth.json
+hub/server/data
 config.js
 
 
