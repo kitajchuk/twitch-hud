@@ -15,8 +15,8 @@ const files = require( "../../files" );
 const config = require( "../../config" );
 const prompt = require( "./prompt" );
 const twitch = require( "./twitch/index" );
-const oauthFile = path.join( __dirname, "oauth.json" );
-const statsFile = path.join( __dirname, "stats.json" );
+const oauthFile = path.join( __dirname, "json/oauth.json" );
+const statsFile = path.join( __dirname, "json/stats.json" );
 
 // This {app}
 const app = {};

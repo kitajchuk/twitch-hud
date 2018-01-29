@@ -77,7 +77,6 @@ module.exports = {
                     "topcheer",
                     {
                         bits: data.top.amount,
-                        color: data.top.tags.color,
                         username: data.top.username
                     }
                 );
@@ -144,7 +143,7 @@ module.exports = {
     },
     alertFollow ( username ) {
         const alertHtml = `
-            <h1 class="yellow">Follow</h1>
+            <h1 class="blue">Follow</h1>
             <p><span class="blue">${username}</span> is now following the channel!</p>
         `;
 

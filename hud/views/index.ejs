@@ -8,20 +8,24 @@
     <body class="<%= locals.dev ? 'dev' : '' %>">
         <div class="hud js-hud">
             <div class="hud__content">
-                <div class="hud__hearts js-hud-hearts"></div>
+                <div class="hud__hearts">
+                    <div class="hud__hearts__bar js-hud-hearts"></div>
+                    <div class="hud__heart__counter js-hud-heart-counter">00:00</div>
+                </div>
                 <div class="hud__rupees">
                     <div class="hud__rupees__cheer js-hud-cheer"></div>
                 </div>
-                <div class="hud__fairies js-hud-fairies"></div>
-                <div class="hud__sidebar js-hud-sidebar">
-                    <div class="hud__heart__counter js-hud-heart-counter">00:00</div>
+                <div class="hud__fairies">
                     <div class="hud__fairy__counter js-hud-fairy-counter">00:00</div>
+                    <div class="hud__fairies__bar js-hud-fairies"></div>
+                </div>
+                <div class="hud__sidebar js-hud-sidebar">
                     <div class="hud__subs">
-                        <h2 class="blue">Recent Subs</h2>
+                        <h2 class="yellow">Subs</h2>
                         <div class="js-hud-subs"></div>
                     </div>
                     <div class="hud__follows">
-                        <h2 class="blue">Recent Follows</h2>
+                        <h2 class="yellow">Follows</h2>
                         <div class="js-hud-follows"></div>
                     </div>
                 </div>

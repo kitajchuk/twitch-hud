@@ -3,13 +3,11 @@
 *******************************************************************************/
 @import "./reset";
 
-$red: #ee2a3e;
+$red: #f30541;
+$blue: #2affea;
 $green: #10ff59;
-$blue: #22beef;
 $pink: #f06c9d;
-$purple: #86006a;
 $yellow: #eefd02;
-$orange: #ff6b01;
 $white: #fff;
 $black: #000;
 $black075: rgba( 0, 0, 0, 0.75 );
@@ -57,36 +55,27 @@ body.dev {
 .red {
     color: $red;
 }
-.pink {
-    color: $pink;
-}
 .blue {
     color: $blue;
 }
 .green {
     color: $green;
 }
-.purple {
-    color: $purple;
-}
-.orange {
-    color: $orange;
-}
 .yellow {
     color: $yellow;
 }
 .hud {
     color: $white;
-    font-family: "Calamity-Regular";
+    font-family: "Calamity-Bold";
     font-size: 22px;
     line-height: 1.5;
 
-    span {
-        font-family: "Calamity-Bold";
-    }
+    // span {
+    //     font-family: "Calamity-Bold";
+    // }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: "Calamity-Bold";
+        // font-family: "Calamity-Bold";
         font-size: 28px;
     }
     h2, h3, h4, h5, h6 {
@@ -112,7 +101,7 @@ body.dev {
     border-radius: 200px;
     left: 50%;
     opacity: 0;
-    padding: 60px 160px;
+    padding: 50px 150px;
     position: fixed;
     top: 50%;
     transform: translate3d( -50%, -50%, 0 );
@@ -165,23 +154,32 @@ body.dev {
  * HUD Hearts
 *******************************************************************************/
 .hud__hearts {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 0;
-    justify-content: flex-start;
     left: 0;
     position: fixed;
     top: 0;
     transform: translate3d( $marginHorz, $marginVert, 0 );
 }
+.hud__hearts__bar {
+    display: inline-block;
+    font-size: 0;
+    vertical-align: middle;
+}
+.hud__heart__counter {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+}
 .hud__hearts__container {
     display: inline-block;
-    height: 38px;
+    height: 34px;
     position: relative;
-    width: 38px;
+    width: 34px;
 
     span {
-        background-color: $red;
+        background-image: url( "/img/heartred.png" );
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: 28px 28px;
         height: 28px;
         left: 50%;
         position: absolute;
@@ -193,7 +191,7 @@ body.dev {
 
     &.slashed {
         span {
-            background-color: $black02;
+            background-image: url( "/img/heartgrey.png" );
         }
     }
 }
@@ -205,23 +203,31 @@ body.dev {
 *******************************************************************************/
 .hud__fairies {
     bottom: 0;
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 0;
-    justify-content: flex-start;
     position: fixed;
     right: 0;
     transform: translate3d( -$marginHorz, -$marginVert, 0 );
-    width: 570px;
+}
+.hud__fairies__bar {
+    display: inline-block;
+    font-size: 0;
+    vertical-align: middle;
+}
+.hud__fairy__counter {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
 }
 .hud__fairies__container {
     display: inline-block;
-    height: 38px;
+    height: 34px;
     position: relative;
-    width: 38px;
+    width: 34px;
 
     span {
-        background-color: $black02;
+        background-image: url( "/img/fairygrey.png" );
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: 28px 28px;
         height: 28px;
         left: 50%;
         position: absolute;
@@ -233,7 +239,7 @@ body.dev {
 
     &.found {
         span {
-            background-color: $pink;
+            background-image: url( "/img/fairypink.png" );
         }
     }
 }
@@ -249,8 +255,6 @@ body.dev {
     top: 0;
     transform: translate3d( $marginHorz, $marginVert * 2.5, 0 );
 }
-.hud__fairy__counter {}
-.hud__heart__counter {}
 .hud__subs,
 .hud__follows {
     padding-top: $marginHorz;

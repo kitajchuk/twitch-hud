@@ -11,9 +11,7 @@ const cheers = {
     },
 
     render () {
-        this.cheersBox[ 0 ].innerHTML = `Top Cheer: <span style="color:${this.data.color};">${this.data.bits}</span> by <span style="color:${this.data.color};">${this.data.username}</span>`;
-
-        console.log( this.data.tags );
+        this.cheersBox[ 0 ].innerHTML = `<span class="yellow">${this.data.bits}</span> by <span class="yellow">${this.data.username}</span>`;
     },
 
     pipe ( data ) {

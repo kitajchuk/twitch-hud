@@ -107,7 +107,7 @@ module.exports = {
     },
     alertHost ( username, viewers ) {
         const alertHtml = `
-            <h1 class="yellow">Host</h1>
+            <h1 class="blue">Host</h1>
             <p><span class="blue">${username}</span> is now hosting you with a viewing party of <span class="blue">${viewers}</span>! Welcome to the channel!</p>
         `;
 
@@ -127,8 +127,8 @@ module.exports = {
     },
     alertSub ( username, message, method ) {
         const alertHtml = `
-            <h1 class="yellow">Sub</h1>
-            <p><span class="blue">${username}</span> just subscribed to the channel! They said: <span class="blue">${message ? message : "Nothing&hellip;"}</span></p>
+            <h1 class="blue">Sub</h1>
+            <p><span class="blue">${username}</span> just subscribed to the channel! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
         `;
 
         this.app.broadcast( "alert", {
@@ -147,8 +147,8 @@ module.exports = {
     },
     alertResub ( username, message, months, methods ) {
         const alertHtml = `
-            <h1 class="yellow">Resub</h1>
-            <p><span class="blue">${username}</span> has resubscribed to the channel for ${months} months in a row! They said: <span class="blue">${message ? message : "Nothing&hellip;"}</span></p>
+            <h1 class="blue">Resub</h1>
+            <p><span class="blue">${username}</span> has resubscribed to the channel for <span class="blue">${months}</span> months in a row! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
         `;
 
         this.app.broadcast( "alert", {
@@ -169,8 +169,8 @@ module.exports = {
     },
     alertCheer ( userstate, message ) {
         const alertHtml = `
-            <h1 class="yellow">Cheer</h1>
-            <p><span class="blue">${userstate.username}</span> has just cheered ${userstate.bits} bits! They said: <span class="blue">${message ? message : "Nothing&hellip;"}</span></p>
+            <h1 class="blue">Cheer</h1>
+            <p><span class="blue">${userstate.username}</span> has just cheered <span class="blue">${userstate.bits}</span> bits! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
         `;
 
         this.app.broadcast( "alert", {

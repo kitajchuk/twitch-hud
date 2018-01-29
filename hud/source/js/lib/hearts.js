@@ -29,7 +29,7 @@ const hearts = {
     },
 
     counter ( data ) {
-        this.heartCounter[ 0 ].innerHTML = `<span class="yellow">${utils.formatTime( data.time )}</span> Heart Timer`;
+        this.heartCounter[ 0 ].innerHTML = `<span class="red">${utils.formatTime( data.time )}</span>`;
     },
 
     pipe ( data ) {

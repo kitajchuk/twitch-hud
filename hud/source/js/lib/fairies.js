@@ -30,7 +30,7 @@ const fairies = {
     },
 
     counter ( data ) {
-        this.fairyCounter[ 0 ].innerHTML = `<span class="${data.bool ? 'green' : 'red'}">${utils.formatTime( data.time )}</span> Fairy Timer`;
+        this.fairyCounter[ 0 ].innerHTML = `<span class="${data.bool ? 'green' : 'red'}">${utils.formatTime( data.time )}</span>`;
     },
 
     pipe ( data ) {
