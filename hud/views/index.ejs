@@ -7,28 +7,32 @@
     </head>
     <body class="<%= locals.dev ? 'dev' : '' %>">
         <div class="hud js-hud">
-            <div class="hud__hearts js-hud-hearts"></div>
-            <div class="hud__rupees">
-                <div class="hud__rupees__cheer js-hud-cheer"></div>
-            </div>
-            <div class="hud__fairies js-hud-fairies"></div>
-            <div class="hud__sidebar js-hud-sidebar">
-                <div class="hud__heart__counter js-hud-heart-counter">00:00</div>
-                <div class="hud__fairy__counter js-hud-fairy-counter">00:00</div>
-                <div class="hud__subs">
-                    <h2 class="blue">Recent Subs</h2>
-                    <div class="js-hud-subs"></div>
+            <div class="hud__content">
+                <div class="hud__hearts js-hud-hearts"></div>
+                <div class="hud__rupees">
+                    <div class="hud__rupees__cheer js-hud-cheer"></div>
                 </div>
-                <div class="hud__follows">
-                    <h2 class="blue">Recent Follows</h2>
-                    <div class="js-hud-follows"></div>
+                <div class="hud__fairies js-hud-fairies"></div>
+                <div class="hud__sidebar js-hud-sidebar">
+                    <div class="hud__heart__counter js-hud-heart-counter">00:00</div>
+                    <div class="hud__fairy__counter js-hud-fairy-counter">00:00</div>
+                    <div class="hud__subs">
+                        <h2 class="blue">Recent Subs</h2>
+                        <div class="js-hud-subs"></div>
+                    </div>
+                    <div class="hud__follows">
+                        <h2 class="blue">Recent Follows</h2>
+                        <div class="js-hud-follows"></div>
+                    </div>
+                </div>
+                <div class="hud__alert js-hud-alert">
+                    <div class="hud__alert__bot">Kitajchukbot</div>
+                    <div class="hud__alert__msg js-hud-alert-msg"></div>
                 </div>
             </div>
-            <div class="hud__alert js-hud-alert">
-                <div class="hud__alert__bot">Kitajchukbot</div>
-                <div class="hud__alert__msg js-hud-alert-msg"></div>
-            </div>
-            <audio class="hud__audio js-hud-audio" src="" controls></audio>
+            <audio class="hud__audio js-hud-audio-fx" src="" controls></audio>
+            <audio class="hud__audio js-hud-audio-bgm" src="" controls></audio>
+            <canvas class="hud__canvas js-hud-canvas" id="canvas"></canvas>
         </div>
         <script src="/js/app.js"></script>
     </body>

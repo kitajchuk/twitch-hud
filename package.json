@@ -9,13 +9,13 @@
     "scripts": {
         "hub:boot": "node ./hub/boot.js",
         "hub:start": "./node_modules/.bin/forever -a -l forever.log -o out.log -e err.log start ./hub/main.js",
-        "hub:start:dev": "./node_modules/.bin/nodemon -i ./hud/source -i ./hud/public -i node_modules ./hub/main.js -- 'dev'",
+        "hub:start:dev": "./node_modules/.bin/nodemon -i ./hud/source -i ./hud/public -i ./node_modules ./hub/main.js -- 'dev'",
         "hub:stop": "./node_modules/.bin/forever stopall",
         "hub:deploy": "rsync -av -e 'ssh -i /Users/kitajchuk/.ssh/clutch.pem' --rsync-path 'sudo rsync' hub config.js files.js package.json ec2-user@35.165.160.198:/var/www/html/",
         "hub:connect": "ssh ec2-user@35.165.160.198 -i ~/.ssh/clutch.pem",
-        "hud:start": "./node_modules/.bin/nodemon -i source -i public -i node_modules ./hud/main.js",
-        "hud:start:dev": "./node_modules/.bin/nodemon -i source -i public -i node_modules ./hud/main.js -- 'dev'",
-        "hud:build": "./node_modules/.bin/webpack --env.production --progress --profile --display-modules --colors -p",
+        "hud:start": "./node_modules/.bin/nodemon -i ./hud/source -i ./hud/public -i ./hud/views -i ./hud/server/stats.json -i ./hud/server/oauth.json -i ./node_modules ./hud/main.js",
+        "hud:start:dev": "./node_modules/.bin/nodemon -i ./hud/source -i ./hud/public -i ./hud/views -i ./hud/server/stats.json -i ./hud/server/oauth.json -i ./node_modules ./hud/main.js -- 'dev'",
+        "hud:build": "./node_modules/.bin/webpack --env.production --progress --profile --display-modules --colors",
         "hud:watch": "./node_modules/.bin/webpack --env.sandbox --hide-modules --colors --watch",
         "postinstall": "cd ./node_modules/properjs-hobo && npm install && npm run build -- 'is eq not one next prev attr last first index parent filter detach append remove trigger prepend closest children removeAttr toggleClass'"
     },

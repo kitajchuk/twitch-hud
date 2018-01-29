@@ -61,6 +61,20 @@ module.exports = {
                             <h1 class="yellow">Fairy Finder</h1>
                             <p><span class="blue">${userstate.username}</span> caught a fairy with a hit percent of <span class="blue">${hit}</span>! We now have <span class="blue">${this.app.data.fairies.value}</span> out of <span class="blue">${this.app.data.fairies.max}</span> fairies!</p>
                         `;
+                        const statUser = this.app.getStats( userstate.username );
+
+                        if ( !statUser ) {
+                            this.app.stats.push({
+                                username: userstate.username,
+                                fairies: 1,
+                                hearts: 0,
+                                bottles: 0
+                            });
+
+                        } else {
+                            statUser.fairies++;
+                            this.app.saveStats( userstate.username );
+                        }
 
                         this.app.broadcast( "alert", {
                             audioHit: "greatFairyLaugh1",
@@ -110,5 +124,18 @@ module.exports = {
             this.tick();
 
         }, timeRun );
+    },
+    award () {
+        const statUser = this.app.getHighStat( "fairies" );
+        const alertHtml = `
+            <h1 class="yellow">Most Fairies</h1>
+            <p><span class="blue">${statUser.username}</span> caught the most fairies with a <span class="blue">Fairy Finder</span> grand total of ${statUser.fairies} fairies!</p>
+        `;
+
+        this.app.broadcast( "award", {
+            canvas: "confetti",
+            audioHit: "greatFairyFountain",
+            alertHtml: alertHtml
+        });
     }
 };

@@ -39,8 +39,8 @@ const webpackConfig = {
 
     module: {
         rules: [
-            { test: /source\/js\/.*\.js$/, exclude: /node_modules/, use: ["eslint-loader"], enforce: "pre" },
-            { test: /source\/js\/.*\.js$/, exclude: /node_modules/, use: [{ loader: "babel-loader", options: { presets: ["es2015"] } }] },
+            { test: /source\/js\/.*\.js$/, exclude: /node_modules|canvas/, use: ["eslint-loader"], enforce: "pre" },
+            { test: /source\/js\/.*\.js$/, exclude: /node_modules|canvas/, use: [{ loader: "babel-loader", options: { presets: ["es2015"] } }] },
             { test: /(hobo|hobo.build)\.js$/, use: ["expose-loader?hobo"] },
             { test: /\.(sass|scss)$/, use: ["file-loader?name=../css/[name].css", "postcss-loader", { loader: "sass-loader" }] }
         ]

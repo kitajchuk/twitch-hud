@@ -1,16 +1,18 @@
-import alert from "./alert";
-import hearts from "./hearts";
-import fairies from "./fairies";
-import audio from "./audio";
-import follows from "./follows";
-import subs from "./subs";
-import cheers from "./cheers";
-
+// import $ from "properjs-hobo";
+import alert from "./lib/alert";
+import hearts from "./lib/hearts";
+import fairies from "./lib/fairies";
+import audio from "./lib/audio";
+import follows from "./lib/follows";
+import subs from "./lib/subs";
+import cheers from "./lib/cheers";
+import confetti from "./canvas/confetti";
 
 
 
 const socket = {
-    init () {
+    init ( app ) {
+        this.app = app;
         this.websocket = new window.WebSocket( `ws://${window.location.host}`, "echo-protocol" );
         this.bind();
 
@@ -29,7 +31,17 @@ const socket = {
             const response = JSON.parse( message.data );
 
             // HUD::events
-            if ( response.event === "alert" ) {
+            if ( response.event === "award" ) {
+                this.app.canvas[ response.data.canvas ].instance.start();
+                alert.show( response.data ).then(() => {
+                    this.app.canvas[ response.data.canvas ].instance.destroy();
+                    audio.backgroundQuiet( false );
+                    audio.stop();
+                });
+                audio.backgroundQuiet( true );
+                audio.play( response.data.audioHit );
+
+            } else if ( response.event === "alert" ) {
                 alert.push( response.data );
                 audio.play( response.data.audioHit );
 
@@ -56,13 +68,16 @@ const socket = {
             }
         };
         this.websocket.onopen = () => {
-            window.app.audio = audio.init();
-            window.app.alert = alert.init();
-            window.app.hearts = hearts.init();
-            window.app.fairies = fairies.init();
-            window.app.follows = follows.init();
-            window.app.subs = subs.init();
-            window.app.cheers = cheers.init();
+            this.app.audio = audio.init();
+            this.app.alert = alert.init();
+            this.app.hearts = hearts.init();
+            this.app.fairies = fairies.init();
+            this.app.follows = follows.init();
+            this.app.subs = subs.init();
+            this.app.cheers = cheers.init();
+            this.app.canvas = {
+                confetti
+            };
         };
         this.websocket.onclose = () => {};
     }

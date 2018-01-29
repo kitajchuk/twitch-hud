@@ -1,5 +1,4 @@
 import $ from "properjs-hobo";
-// import socket from "./socket";
 import utils from "./utils";
 
 
@@ -11,8 +10,6 @@ const fairies = {
         this.fairies = null;
         this.data = null;
         this.last = null;
-
-        // socket.emit( "fairies" );
 
         return this;
     },

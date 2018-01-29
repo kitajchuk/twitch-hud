@@ -6,6 +6,8 @@ module.exports = {
     name: "prompt",
     data: {},
     init ( app ) {
+        this.app = app;
+
         app.lager.server( `[${this.name}] utility initialized` );
 
         process.stdin.setEncoding( "utf8" );
@@ -15,22 +17,31 @@ module.exports = {
             if ( chunk !== null ) {
                 // Run tests...
                 if ( chunk === "!testhost"  ) {
-                    app.twitch.tmi.alertHost( "gerudoslut", 420 );
+                    this.app.twitch.tmi.alertHost( "gerudoslut", 420 );
 
                 } else if ( chunk === "!testsub"  ) {
-                    app.twitch.tmi.alertSub( "gamespite", "Now I get to use all the emotes..." );
+                    this.app.twitch.tmi.alertSub( "gamespite", "Now I get to use all the emotes..." );
 
                 } else if ( chunk === "!testresub"  ) {
-                    app.twitch.tmi.alertResub( "schmoopiie", "You're using my code to make this...", 7 );
+                    this.app.twitch.tmi.alertResub( "schmoopiie", "You're using my code to make this...", 7 );
 
                 } else if ( chunk === "!testcheer"  ) {
-                    app.twitch.tmi.alertCheer( { username: "freakyFox12", bits: 1000 }, "You can have all my bits...!" );
+                    this.app.twitch.tmi.alertCheer( { username: "freakyFox12", bits: 1000 }, "You can have all my bits...!" );
 
                 } else if ( chunk === "!testfollow"  ) {
-                    app.twitch.helix.alertFollow( "dinsfire09" );
+                    this.app.twitch.helix.alertFollow( "dinsfire09" );
+
+                } else if ( chunk === "!ffa"  ) {
+                    this.app.getCommand( "fairyFinder" ).award();
+
+                } else if ( chunk === "!hta"  ) {
+                    this.app.getCommand( "heartThief" ).award();
+
+                } else if ( chunk === "!fba"  ) {
+                    this.app.getCommand( "fairyBottle" ).award();
 
                 } else {
-                    app.twitch.tmi.emitMe( chunk );
+                    this.app.twitch.tmi.emitMe( chunk );
                 }
             }
         });

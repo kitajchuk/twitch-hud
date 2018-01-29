@@ -16,6 +16,7 @@ const config = require( "../../config" );
 const prompt = require( "./prompt" );
 const twitch = require( "./twitch/index" );
 const oauthFile = path.join( __dirname, "oauth.json" );
+const statsFile = path.join( __dirname, "stats.json" );
 
 // This {app}
 const app = {};
@@ -31,6 +32,7 @@ app.prompt = prompt;
 app.lager = lager;
 app.config = config;
 app.connections = [];
+app.stats = files.read( statsFile, true );
 app.init = () => {
     // Initialize commands
     app.commands.forEach(( command ) => {
@@ -43,9 +45,38 @@ app.init = () => {
     // Initialize server
     app.server.listen( config.hud.port );
 
-    app.lager.info( "<<< app data" );
-        app.lager.data( app.data );
-    app.lager.info( "app data >>>" );
+    // app.lager.info( "<<< app data" );
+    //     app.lager.data( app.data );
+    // app.lager.info( "app data >>>" );
+};
+app.getHighStat = ( key ) => {
+    let test = {
+        username: config.all.botName,
+        fairies: 0,
+        hearts: 0,
+        bottles: 0
+    };
+
+    return app.stats.forEach(( stat ) => {
+        if ( stat[ key ] > test[ key ] ) {
+            test = stat;
+        }
+    });
+
+    return test;
+};
+app.getStats = ( name ) => {
+    return app.stats.find(( stat ) => {
+        return (stat.username === name);
+    });
+};
+app.saveStats = () => {
+    files.write( statsFile, app.stats );
+};
+app.getCommand = ( comm ) => {
+    return app.commands.find(( command ) => {
+        return (command.name === comm);
+    });
 };
 app.runCommand = ( comm, message ) => {
     return new Promise(( resolve, reject ) => {
