@@ -28,8 +28,6 @@ module.exports = {
         this.throttle = 10000; // 10 seconds in milliseconds
         this.users = {};
 
-        this.tick();
-
         this.app.lager.template( `[${this.name}] command initialized` );
     },
     exec ( client, bot, channel, userstate, message, self, tmi ) {
@@ -95,6 +93,23 @@ module.exports = {
             } else {
                 this.app.twitch.tmi.emitBot( `@${userstate.username} You can't catch a fairy right now, keep an eye on the timer :)` );
             }
+        });
+    },
+    stop () {
+        if ( this.timeout ) {
+            clearTimeout( this.timeout );
+        }
+
+        if ( this.interval ) {
+            clearTimeout( this.interval );
+        }
+
+        // Always reset to TRUE after stopping
+        this.fairies = true;
+
+        this.app.broadcast( "fairyCounter", {
+            time: "",
+            bool: this.fairies
         });
     },
     tick () {

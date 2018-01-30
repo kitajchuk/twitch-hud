@@ -15,8 +15,28 @@ module.exports = {
             const chunk = process.stdin.read().replace( /^\s+|\s+$/g, "" );
 
             if ( chunk !== null ) {
+                // GAME: Start app game
+                if ( chunk === "!gamestart"  ) {
+                    this.app.startGame();
+
+                // GAME: Stop app game
+                } else if ( chunk === "!gamestop"  ) {
+                    this.app.stopGame();
+
+                // GAME: Fairy Finder
+                } else if ( chunk === "!gameff"  ) {
+                    this.app.getCommand( "fairyFinder" ).award();
+
+                // GAME: Heart Thief
+                } else if ( chunk === "!gameht"  ) {
+                    this.app.getCommand( "heartThief" ).award();
+
+                // GAME: Fairy Bottle
+                } else if ( chunk === "!gamefb"  ) {
+                    this.app.getCommand( "fairyBottle" ).award();
+
                 // TEST: Host
-                if ( chunk === "!testhost"  ) {
+                } else if ( chunk === "!testhost"  ) {
                     this.app.twitch.tmi.alertHost( "gerudoslut", 420 );
 
                 // TEST: Sub
@@ -43,19 +63,7 @@ module.exports = {
                 } else if ( chunk === "!testbgm"  ) {
                     this.app.broadcast( "audiobgm", {} );
 
-                // AWARD: Fairy Finder
-                } else if ( chunk === "!ffa"  ) {
-                    this.app.getCommand( "fairyFinder" ).award();
-
-                // AWARD: Heart Thief
-                } else if ( chunk === "!hta"  ) {
-                    this.app.getCommand( "heartThief" ).award();
-
-                // AWARD: Fairy Bottle
-                } else if ( chunk === "!fba"  ) {
-                    this.app.getCommand( "fairyBottle" ).award();
-
-                // Broadcast to chat
+                // CHAT
                 } else {
                     this.app.twitch.tmi.emitMe( chunk );
                 }

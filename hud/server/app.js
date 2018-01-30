@@ -33,6 +33,7 @@ app.lager = lager;
 app.config = config;
 app.connections = [];
 app.stats = files.read( statsFile, true );
+app.gameon = false;
 app.init = () => {
     // Initialize commands
     app.commands.forEach(( command ) => {
@@ -44,10 +45,16 @@ app.init = () => {
 
     // Initialize server
     app.server.listen( config.hud.port );
-
-    // app.lager.info( "<<< app data" );
-    //     app.lager.data( app.data );
-    // app.lager.info( "app data >>>" );
+};
+app.startGame = () => {
+    app.gameon = true;
+    app.getCommand( "heartThief" ).tick();
+    app.getCommand( "fairyFinder" ).tick();
+};
+app.stopGame = () => {
+    app.gameon = false;
+    app.getCommand( "heartThief" ).stop();
+    app.getCommand( "fairyFinder" ).stop();
 };
 app.getHighStat = ( key ) => {
     let test = {
@@ -83,7 +90,7 @@ app.runCommand = ( comm, message ) => {
         app.commands.forEach(( command ) => {
             const match = message.match( command.regex );
 
-            if ( match && command.name === comm ) {
+            if ( app.gameon && match && command.name === comm ) {
                 resolve({
                     match
                 });

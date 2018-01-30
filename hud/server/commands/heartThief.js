@@ -21,8 +21,6 @@ module.exports = {
         this.pubTime = 0;
         this.timeRun = 600000; // 10 minutes in milliseconds
 
-        this.tick();
-
         this.app.lager.template( `[${this.name}] command initialized` );
     },
     exec ( client, bot, channel, userstate, message, self, tmi ) {
@@ -59,6 +57,19 @@ module.exports = {
             this.app.broadcast( "hearts", {
                 hearts: this.app.data.hearts
             });
+        });
+    },
+    stop () {
+        if ( this.timeout ) {
+            clearTimeout( this.timeout );
+        }
+
+        if ( this.interval ) {
+            clearTimeout( this.interval );
+        }
+
+        this.app.broadcast( "heartCounter", {
+            time: ""
         });
     },
     tick () {
