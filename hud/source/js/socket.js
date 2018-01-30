@@ -41,6 +41,9 @@ const socket = {
                 audio.backgroundQuiet( true );
                 audio.play( response.data.audioHit );
 
+            } else if ( response.event === "audiobgm" ) {
+                audio.background();
+
             } else if ( response.event === "alert" ) {
                 alert.push( response.data );
                 audio.play( response.data.audioHit );

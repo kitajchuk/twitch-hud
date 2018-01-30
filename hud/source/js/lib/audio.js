@@ -43,8 +43,6 @@ const audio = {
             }
         };
 
-        this.background();
-
         return this;
     },
 
