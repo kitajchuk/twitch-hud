@@ -57,7 +57,7 @@ app.getHighStat = ( key ) => {
         bottles: 0
     };
 
-    return app.stats.forEach(( stat ) => {
+    app.stats.forEach(( stat ) => {
         if ( stat[ key ] > test[ key ] ) {
             test = stat;
         }
