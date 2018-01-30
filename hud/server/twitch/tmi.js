@@ -156,15 +156,26 @@ module.exports = {
             alertHtml: alertHtml
         });
     },
+    topCheer ( userstate ) {
+        this.app.broadcast(
+            "topcheerswap",
+            {
+                bits: userstate.bits,
+                username: userstate.username
+            }
+        );
+    },
     subCheer ( app ) {
         this.memo.client.on( "cheer", ( channel, userstate, message ) => {
             this.app.lager.info( "<<< cheer userstate object" );
                 this.app.lager.data( userstate );
             this.app.lager.info( "cheer userstate object >>>" );
 
-            this.alertCheer( userstate, message );
+            if ( userstate.bits > this.app.twitch.helix.memo.topcheer ) {
+                this.topCheer( userstate );
+            }
 
-            this.app.twitch.helix.getCheer();
+            this.alertCheer( userstate, message );
         });
     },
     alertCheer ( userstate, message ) {

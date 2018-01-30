@@ -60,6 +60,9 @@ const socket = {
             } else if ( response.event === "topcheer" ) {
                 cheers.pipe( response.data );
 
+            } else if ( response.event === "topcheerswap" ) {
+                cheers.swap( response.data );
+
             } else if ( response.event === "fairyCounter" ) {
                 fairies.counter( response.data );
 

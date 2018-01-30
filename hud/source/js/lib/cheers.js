@@ -1,4 +1,6 @@
 import $ from "properjs-hobo";
+import Tween from "properjs-tween";
+import Easing from "properjs-easing";
 
 
 
@@ -17,6 +19,27 @@ const cheers = {
     pipe ( data ) {
         this.data = data;
         this.render();
+    },
+
+    swap ( data ) {
+        const spans = this.cheersBox.find( "span" );
+
+        spans.last()[ 0 ].innerHTML = data.username;
+
+        this.tween = new Tween({
+            from: this.data.bits,
+            to: data.bits,
+            ease: Easing.easeOutQuad,
+            duration: 3000,
+            update: ( bit ) => {
+                spans.first()[ 0 ].innerHTML = Math.round( bit );
+            },
+            complete: ( bit ) => {
+                spans.first()[ 0 ].innerHTML = Math.round( bit );
+
+                this.data = data;
+            }
+        });
     }
 };
 

@@ -28,6 +28,12 @@ module.exports = {
                 } else if ( chunk === "!testcheer"  ) {
                     this.app.twitch.tmi.alertCheer( { username: "freakyFox12", bits: 1000 }, "You can have all my bits...!" );
 
+                } else if ( chunk === "!testtopcheer"  ) {
+                    this.app.twitch.tmi.topCheer({
+                        bits: 1000,
+                        username: "dengarsDumpTruck"
+                    });
+
                 } else if ( chunk === "!testfollow"  ) {
                     this.app.twitch.helix.alertFollow( "dinsfire09" );
 

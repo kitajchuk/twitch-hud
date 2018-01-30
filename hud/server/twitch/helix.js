@@ -73,6 +73,7 @@ module.exports = {
 
         ).then(( data ) => {
             if ( data.top.username && data.top.amount ) {
+                this.memo.topcheer = data.top.amount;
                 this.app.broadcast(
                     "topcheer",
                     {
