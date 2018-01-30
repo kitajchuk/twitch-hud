@@ -1,3 +1,8 @@
+// Twitch webhooks
+// https://dev.twitch.tv/docs/api/webhooks-guide
+// https://w3c.github.io/websub/
+
+
 // Load system
 const path = require( "path" );
 const http = require( "http" );
@@ -32,6 +37,9 @@ app.init = () => {
     app.pubsub( "users/follows", "subscribe", {
         to_id: config.all.userId
     });
+
+    // Watch subscriptions so we can renew them
+    app.watch();
 };
 app.slackit = ( message ) => {
     if ( !app.dev ) {
@@ -58,6 +66,30 @@ app.broadcast = ( event, data ) => {
         });
     }
 };
+app.watch = () => {
+    // The Twitch lease time is in seconds so we must convert to milliseconds
+    const leaseTimeMS = (config.hub.lease * 1000);
+
+    app.interval = setInterval(() => {
+        for ( const topicUrl in app.subs ) {
+            // If the time ellapsed is longer than or equal to our lease time renew
+            if ( (Date.now() - app.subs[ topicUrl ].created) >= leaseTimeMS ) {
+                app.pubsub( app.subs[ topicUrl ].topic, "subscribe", app.subs[ topicUrl ].params );
+
+                app.slackit([
+                    `Log: Renewing subscription topic ${topicUrl}`
+                ]);
+
+            } else {
+                app.slackit([
+                    `Log: Checked subscription topic ${topicUrl}`
+                ]);
+            }
+        }
+
+    // Run every quarter of a day...
+    }, (leaseTimeMS / 4) );
+};
 app.unsub = () => {
     for ( const topicUrl in app.subs ) {
         app.pubsub( app.subs[ topicUrl ].topic, "unsubscribe", app.subs[ topicUrl ].params );
@@ -71,6 +103,7 @@ app.pubsub = ( topic, mode, params ) => {
     }
 
     // Unique secret generated for each topic subscription
+    const created = Date.now();
     const topicUrl = `https://api.twitch.tv/helix/${topic}?${query.join( "&" )}`;
     const secret = crypto
                     .createHmac( "sha256", config.hub.secret )
@@ -84,7 +117,8 @@ app.pubsub = ( topic, mode, params ) => {
             topic,
             mode,
             params,
-            secret
+            secret,
+            created
         };
     }
 
@@ -234,10 +268,18 @@ app.websocketserver.on( "close", () => {
 
 // {app} going down...
 process.on( "SIGINT", () => {
-    // Unsubscribe from all subscriptions
+    // Unsubscribe
     app.unsub();
 
-    // Save the IDs from Twitch, cause idk yet...
+    // Cleanup
+    try {
+        clearTimeout( app.interval );
+
+    } catch ( error ) {
+        lager.error( error );
+    }
+
+    // Save the IDs
     files.write( path.join( __dirname, "data", "ids.json" ), app.ids, true );
 
     lager.error( "SIGINT process terminated" );
