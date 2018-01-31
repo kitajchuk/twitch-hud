@@ -112,7 +112,10 @@ app.pubsub = ( topic, mode, params ) => {
 
     // Only push unique subscriptions
     // Using the hub.topic we can look this up later on POSTs from Twitch
-    if ( !app.subs[ topicUrl ] && mode === "subscribe" ) {
+    // @note: I had this condition in there as well: `!app.subs[ topicUrl ]`
+    //        However this breaks the subscription renewal by not updating
+    //        the local manifest for the subscription. Now renewals work too :)
+    if ( mode === "subscribe" ) {
         app.subs[ topicUrl ] = {
             topic,
             mode,
