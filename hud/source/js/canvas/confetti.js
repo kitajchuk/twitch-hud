@@ -219,16 +219,6 @@ class ConfettiWorld {
 
   init () {
     this.objects = []
-    // window.addEventListener('click', this.explode.bind(this))
-
-    // Initial explosion
-    // let counter = 3
-    // while (counter-- > 0) {
-    //   this.explode({
-    //     clientX: this.universe.width / 2,
-    //     clientY: this.universe.height / 2
-    //   })
-    // }
   }
 
   update (dt) {
@@ -316,12 +306,9 @@ class Universe {
     this.world = null // current state
 
     this.updateSize()
-    // window.addEventListener('resize', this.updateSize.bind(this))
 
     this.addWorld('confetti', ConfettiWorld)
     this.setWorld('confetti')
-
-    // this.start()
   }
 
   start () {
@@ -349,14 +336,7 @@ class Universe {
   }
 
   render () {
-    // const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
-    // gradient.addColorStop(0, '#34495e')
-    // gradient.addColorStop(1, '#2c3e50')
-
     this.ctx.clearRect(0, 0, this.width, this.height)
-    // this.ctx.fillStyle = '#2c3e50'
-    // this.ctx.fillStyle = gradient
-    // this.ctx.fillRect(0, 0, this.width, this.height)
     this.world.render(this.ctx)
   }
 
@@ -397,12 +377,6 @@ class Universe {
   }
 
 }
-
-// Main
-
-// console.clear()
-// const element = document.querySelector('#canvas')
-// window.Canvas = new Universe(element)
 
 
 
