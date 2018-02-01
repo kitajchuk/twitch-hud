@@ -1,6 +1,7 @@
 import $ from "properjs-hobo";
 import Tween from "properjs-tween";
-import Easing from "properjs-easing";
+// import Easing from "properjs-easing";
+import audio from "./audio";
 
 
 
@@ -23,20 +24,21 @@ const cheers = {
 
     swap ( data ) {
         const spans = this.cheersBox.find( "span" );
+        const duration = ((data.bits - this.data.bits) / 20) * 1000;
 
         spans.last()[ 0 ].innerHTML = data.username;
 
         this.tween = new Tween({
             from: this.data.bits,
             to: data.bits,
-            ease: Easing.easeOutQuad,
-            duration: 3000,
+            duration,
             update: ( bit ) => {
                 spans.first()[ 0 ].innerHTML = Math.round( bit );
+                audio.hit( "rupeeChange" );
             },
             complete: ( bit ) => {
                 spans.first()[ 0 ].innerHTML = Math.round( bit );
-
+                audio.hit( "rupeeChangeDone" );
                 this.data = data;
             }
         });

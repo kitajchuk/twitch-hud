@@ -150,7 +150,7 @@ module.exports = {
 
         this.app.broadcast( "alert", {
             audioHit: "smallItem",
-            alertHtml: alertHtml
+            alertHtml
         });
     }
 };

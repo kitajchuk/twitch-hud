@@ -6,7 +6,7 @@ import audio from "./lib/audio";
 import follows from "./lib/follows";
 import subs from "./lib/subs";
 import cheers from "./lib/cheers";
-import confetti from "./canvas/confetti";
+import leaders from "./lib/leaders";
 
 
 
@@ -31,17 +31,26 @@ const socket = {
             const response = JSON.parse( message.data );
 
             // HUD::events
-            if ( response.event === "award" ) {
-                this.app.canvas[ response.data.canvas ].instance.start();
-                alert.show( response.data ).then(() => {
-                    this.app.canvas[ response.data.canvas ].instance.destroy();
-                    audio.backgroundQuiet( false );
-                    audio.stop();
+            if ( response.event === "leaderboards" ) {
+                alert.push({
+                    alertHtml: response.data.heartThiefHtml
+                });
+                alert.push({
+                    alertHtml: response.data.fairyBottleHtml
                 });
                 audio.backgroundQuiet( true );
-                audio.play( response.data.audioHit );
+                audio.play( response.data.audioHit ).then(( /*audioHit*/ ) => {
+                    alert.hide();
+                    audio.backgroundQuiet( false );
+                });
+                setTimeout(() => {
+                    alert.show({
+                        alertHtml: response.data.fairyFinderHtml
+                    });
 
-            } else if ( response.event === "audiobgm" ) {
+                }, (alert.duration * 2) + 1000 );
+
+            } else if ( response.event === "bgm" ) {
                 audio.background();
 
             } else if ( response.event === "alert" ) {
@@ -66,6 +75,9 @@ const socket = {
             } else if ( response.event === "topcheerswap" ) {
                 cheers.swap( response.data );
 
+            } else if ( response.event === "leaders" ) {
+                leaders.pipe( response.data );
+
             } else if ( response.event === "fairyCounter" ) {
                 fairies.counter( response.data );
 
@@ -81,9 +93,7 @@ const socket = {
             this.app.follows = follows.init();
             this.app.subs = subs.init();
             this.app.cheers = cheers.init();
-            this.app.canvas = {
-                confetti
-            };
+            this.app.leaders = leaders.init();
         };
         this.websocket.onclose = () => {};
     }

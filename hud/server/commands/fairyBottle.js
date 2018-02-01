@@ -54,7 +54,7 @@ module.exports = {
 
                 this.app.broadcast( "alert", {
                     audioHit: "fairy",
-                    alertHtml: alertHtml
+                    alertHtml
                 });
 
                 this.app.broadcast( "hearts", {

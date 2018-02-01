@@ -23,17 +23,9 @@ module.exports = {
                 } else if ( chunk === "!gamestop"  ) {
                     this.app.stopGame();
 
-                // GAME: Fairy Finder
-                } else if ( chunk === "!gameff"  ) {
-                    this.app.getCommand( "fairyFinder" ).award();
-
-                // GAME: Heart Thief
-                } else if ( chunk === "!gameht"  ) {
-                    this.app.getCommand( "heartThief" ).award();
-
-                // GAME: Fairy Bottle
-                } else if ( chunk === "!gamefb"  ) {
-                    this.app.getCommand( "fairyBottle" ).award();
+                // GAME: Leader boards
+                } else if ( chunk === "!gamestat"  ) {
+                    this.app.statGame();
 
                 // TEST: Host
                 } else if ( chunk === "!testhost"  ) {
@@ -53,15 +45,16 @@ module.exports = {
 
                 // TEST: Top Cheer
                 } else if ( chunk === "!testcheerswap"  ) {
-                    this.app.twitch.tmi.topCheer( { bits: 666, username: "dengarsDumpTruck" } );
+                    this.app.twitch.tmi.alertCheer( { bits: 666, username: "freakyFox12" }, "" );
+                    this.app.twitch.tmi.topCheer( { bits: 666, username: "pikaFOO" } );
 
                 // TEST: Follow
                 } else if ( chunk === "!testfollow"  ) {
                     this.app.twitch.helix.alertFollow( "dinsfire09" );
 
-                // TEST: Background Music
-                } else if ( chunk === "!testbgm"  ) {
-                    this.app.broadcast( "audiobgm", {} );
+                // TOGGLE: Background Music
+                } else if ( chunk === "!bgm"  ) {
+                    this.app.broadcast( "bgm", {} );
 
                 // CHAT
                 } else {

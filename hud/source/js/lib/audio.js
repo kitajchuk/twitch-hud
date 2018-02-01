@@ -10,6 +10,7 @@ const audio = {
         this.nodeBgm = $( ".js-hud-audio-bgm" );
         this.nodeFx[ 0 ].volume = 1;
         this.nodeBgm[ 0 ].volume = 0.5;
+        this.plays = {};
         this.media = {
             fx: {
                 item: "/media/fx/08_Item_Catch.wav",
@@ -26,7 +27,9 @@ const audio = {
                 fairyOcarinaGet: "/media/fx/18_Fairy_Ocarina_Get.wav",
                 openTreasureBox: "/media/fx/07_Open_Treasure_Box.wav",
                 spiritualStoneGet: "/media/fx/17_Spiritual_Stone_Get.wav",
-                greatFairyFountain: "/media/fx/40_Great_Fairy_Fountain.wav"
+                greatFairyFountain: "/media/fx/40_Great_Fairy_Fountain.wav",
+                rupeeChange: "/media/fx/OOT_Get_Rupee_Change.wav",
+                rupeeChangeDone: "/media/fx/OOT_Get_Rupee_ChangeDone.wav"
             },
             bgm: {
                 titleTheme: "/media/bgm/01_Title_Theme.wav",
@@ -46,9 +49,29 @@ const audio = {
         return this;
     },
 
+    // For really short sounds like rupee change
+    hit ( sound ) {
+        const tempNode = new window.Audio( this.media.fx[ sound ] );
+
+        tempNode.volume = 0.25;
+        tempNode.play();
+    },
+
     play ( sound ) {
+        let resolve = null;
+        const onEnded = () => {
+            resolve( sound );
+
+            this.nodeFx.off( "ended", onEnded );
+        };
+
         this.nodeFx[ 0 ].src = this.media.fx[ sound ];
         this.nodeFx[ 0 ].play();
+        this.nodeFx.on( "ended", onEnded );
+
+        return new Promise(( res ) => {
+            resolve = res;
+        });
     },
 
     stop () {

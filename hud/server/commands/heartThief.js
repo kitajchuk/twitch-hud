@@ -51,7 +51,7 @@ module.exports = {
 
             this.app.broadcast( "alert", {
                 audioHit: "scream1",
-                alertHtml: alertHtml
+                alertHtml
             });
 
             this.app.broadcast( "hearts", {
@@ -69,7 +69,7 @@ module.exports = {
         }
 
         this.app.broadcast( "heartCounter", {
-            time: ""
+            time: 0
         });
     },
     tick () {

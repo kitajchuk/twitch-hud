@@ -113,7 +113,7 @@ module.exports = {
 
         this.app.broadcast( "alert", {
             audioHit: "goldSkulltula",
-            alertHtml: alertHtml
+            alertHtml
         });
     },
     subSub ( app ) {
@@ -133,7 +133,7 @@ module.exports = {
 
         this.app.broadcast( "alert", {
             audioHit: "heartContainer",
-            alertHtml: alertHtml
+            alertHtml
         });
     },
     subResub ( app ) {
@@ -153,7 +153,7 @@ module.exports = {
 
         this.app.broadcast( "alert", {
             audioHit: "magicRefill",
-            alertHtml: alertHtml
+            alertHtml
         });
     },
     topCheer ( userstate ) {
@@ -186,7 +186,7 @@ module.exports = {
 
         this.app.broadcast( "alert", {
             audioHit: "item",
-            alertHtml: alertHtml
+            alertHtml
         });
     }
 };

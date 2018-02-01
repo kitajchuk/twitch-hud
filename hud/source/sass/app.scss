@@ -64,6 +64,9 @@ body.dev {
 .yellow {
     color: $yellow;
 }
+.pink {
+    color: $pink;
+}
 .hud {
     color: $white;
     font-family: "Calamity-Bold";
@@ -256,7 +259,8 @@ body.dev {
     transform: translate3d( $marginHorz, $marginVert * 2.5, 0 );
 }
 .hud__subs,
-.hud__follows {
+.hud__follows,
+.hud__leaders {
     padding-top: $marginHorz;
 }
 

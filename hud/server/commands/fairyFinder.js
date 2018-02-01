@@ -76,7 +76,7 @@ module.exports = {
 
                         this.app.broadcast( "alert", {
                             audioHit: "greatFairyLaugh1",
-                            alertHtml: alertHtml
+                            alertHtml
                         });
 
                         this.app.broadcast( "fairies", {
@@ -108,7 +108,7 @@ module.exports = {
         this.fairies = true;
 
         this.app.broadcast( "fairyCounter", {
-            time: "",
+            time: 0,
             bool: this.fairies
         });
     },
@@ -139,18 +139,5 @@ module.exports = {
             this.tick();
 
         }, timeRun );
-    },
-    award () {
-        const statUser = this.app.getHighStat( "fairies" );
-        const alertHtml = `
-            <h1 class="yellow">Most Fairies</h1>
-            <p><span class="blue">${statUser.username}</span> caught the most fairies with a <span class="blue">Fairy Finder</span> grand total of ${statUser.fairies} fairies!</p>
-        `;
-
-        this.app.broadcast( "award", {
-            canvas: "confetti",
-            audioHit: "greatFairyFountain",
-            alertHtml: alertHtml
-        });
     }
 };

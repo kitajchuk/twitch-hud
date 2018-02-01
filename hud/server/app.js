@@ -46,6 +46,29 @@ app.init = () => {
     // Initialize server
     app.server.listen( config.hud.port );
 };
+app.leaders = () => {
+    const fairyFinder = app.getHighStat( "fairies" );
+    const heartThief = app.getHighStat( "hearts" );
+    const fairyBottle = app.getHighStat( "bottles" );
+
+    app.broadcast( "leaders", [
+        {
+            username: fairyFinder.username,
+            value: fairyFinder.fairies,
+            color: "pink"
+        },
+        {
+            username: heartThief.username,
+            value: heartThief.hearts,
+            color: "red"
+        },
+        {
+            username: fairyBottle.username,
+            value: fairyBottle.bottles,
+            color: "blue"
+        }
+    ]);
+};
 app.startGame = () => {
     app.gameon = true;
     app.getCommand( "heartThief" ).tick();
@@ -55,6 +78,30 @@ app.stopGame = () => {
     app.gameon = false;
     app.getCommand( "heartThief" ).stop();
     app.getCommand( "fairyFinder" ).stop();
+};
+app.statGame = () => {
+    const fairyFinder = app.getHighStat( "fairies" );
+    const fairyFinderHtml = `
+        <h1 class="pink">Fairy Finder</h1>
+        <p><span class="blue">${fairyFinder.username}</span> caught <span class="pink">${fairyFinder.fairies}</span> fairies!</p>
+    `;
+    const heartThief = app.getHighStat( "hearts" );
+    const heartThiefHtml = `
+        <h1 class="red">Heart Thief</h1>
+        <p><span class="blue">${heartThief.username}</span> slashed <span class="red">${heartThief.hearts}</span> hearts!</p>
+    `;
+    const fairyBottle = app.getHighStat( "bottles" );
+    const fairyBottleHtml = `
+        <h1 class="blue">Fairy Bottle</h1>
+        <p><span class="blue">${fairyBottle.username}</span> used <span class="blue">${fairyBottle.bottles}</span> fairy bottles!</p>
+    `;
+
+    app.broadcast( "leaderboards", {
+        audioHit: "greatFairyFountain",
+        fairyFinderHtml,
+        heartThiefHtml,
+        fairyBottleHtml
+    });
 };
 app.getHighStat = ( key ) => {
     let test = {
@@ -137,8 +184,6 @@ app.oauth = ( req, res, next ) => {
     // 0.0 Authorized
     if ( oauthJson.access_token ) {
         twitch.memo.oauth = oauthJson;
-        twitch.tmi.init( app );
-        twitch.helix.init( app );
 
         next();
 
@@ -207,6 +252,10 @@ app.websocketserver.on( "request", ( request ) => {
 
     if ( request.origin === config.hud.url ) {
         request.accept( "echo-protocol", request.origin );
+
+        twitch.tmi.init( app );
+        twitch.helix.init( app );
+        app.leaders();
     }
 });
 app.websocketserver.on( "connect", ( connection ) => {
