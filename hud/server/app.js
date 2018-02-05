@@ -112,7 +112,8 @@ app.getHighStat = ( key ) => {
     };
 
     app.stats.forEach(( stat ) => {
-        if ( stat[ key ] > test[ key ] ) {
+        // Exclude THIS channel and channel BOT
+        if ( stat[ key ] > test[ key ] && stat.username !== config.all.userName && stat.username !== config.all.botName ) {
             test = stat;
         }
     });

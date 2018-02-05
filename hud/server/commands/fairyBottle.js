@@ -64,6 +64,8 @@ module.exports = {
                 this.app.broadcast( "fairies", {
                     fairies: this.app.data.fairies
                 });
+
+                this.app.leaders();
             }
         });
     }

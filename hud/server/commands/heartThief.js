@@ -57,6 +57,8 @@ module.exports = {
             this.app.broadcast( "hearts", {
                 hearts: this.app.data.hearts
             });
+
+            this.app.leaders();
         });
     },
     stop () {

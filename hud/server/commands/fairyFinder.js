@@ -83,6 +83,8 @@ module.exports = {
                             fairies: this.app.data.fairies
                         });
 
+                        this.app.leaders();
+
                         this.app.twitch.tmi.emitBot( `@${userstate.username} You caught a fairy with a hit percent of ${hit}!` );
 
                     } else {

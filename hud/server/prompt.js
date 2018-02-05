@@ -29,7 +29,7 @@ module.exports = {
 
                 // TEST: Host
                 } else if ( chunk === "!testhost"  ) {
-                    this.app.twitch.tmi.alertHost( "gerudoslut", 420 );
+                    this.app.twitch.tmi.alertHost( "pizzaButt", 420 );
 
                 // TEST: Sub
                 } else if ( chunk === "!testsub"  ) {
@@ -45,7 +45,7 @@ module.exports = {
 
                 // TEST: Top Cheer
                 } else if ( chunk === "!testcheerswap"  ) {
-                    this.app.twitch.tmi.alertCheer( { bits: 666, username: "freakyFox12" }, "" );
+                    this.app.twitch.tmi.alertCheer( { bits: 666, username: "pikaFOO" }, "" );
                     this.app.twitch.tmi.topCheer( { bits: 666, username: "pikaFOO" } );
 
                 // TEST: Follow

@@ -12,7 +12,7 @@ const leaders = {
 
     render () {
         this.leadersBox[ 0 ].innerHTML = this.data.map(( stat ) => {
-            return `<div class="">${stat.username} <span class="${stat.color}">${stat.value}</span></div>`;
+            return `<div class="${stat.color}">${stat.username}: ${stat.value}</div>`;
 
         }).join( "" );
     },
