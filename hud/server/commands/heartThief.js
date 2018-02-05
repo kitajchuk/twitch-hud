@@ -41,7 +41,8 @@ module.exports = {
                     username: userstate.username,
                     fairies: 0,
                     hearts: 1,
-                    bottles: 0
+                    bottles: 0,
+                    mazes: 0
                 });
 
             } else {

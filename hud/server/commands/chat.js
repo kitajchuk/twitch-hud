@@ -6,7 +6,6 @@
  *
  *
  * Proxy chat to web UI
- * Also receives MY input from command-line prompt
  *
  *
  */

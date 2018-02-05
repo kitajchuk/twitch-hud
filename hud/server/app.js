@@ -50,6 +50,7 @@ app.leaders = () => {
     const fairyFinder = app.getHighStat( "fairies" );
     const heartThief = app.getHighStat( "hearts" );
     const fairyBottle = app.getHighStat( "bottles" );
+    const mazeRunner = app.getHighStat( "mazes" );
 
     app.broadcast( "leaders", [
         {
@@ -66,6 +67,11 @@ app.leaders = () => {
             username: fairyBottle.username,
             value: fairyBottle.bottles,
             color: "blue"
+        },
+        {
+            username: mazeRunner.username,
+            value: mazeRunner.mazes,
+            color: "green"
         }
     ]);
 };
@@ -95,12 +101,18 @@ app.statGame = () => {
         <h1 class="blue">Fairy Bottle</h1>
         <p><span class="blue">${fairyBottle.username}</span> used <span class="blue">${fairyBottle.bottles}</span> fairy bottles!</p>
     `;
+    const mazeRunner = app.getHighStat( "bottles" );
+    const mazeRunnerHtml = `
+        <h1 class="blue">Maze Runner</h1>
+        <p><span class="blue">${mazeRunner.username}</span> completed <span class="blue">${mazeRunner.mazes}</span> mazes!</p>
+    `;
 
     app.broadcast( "leaderboards", {
         audioHit: "greatFairyFountain",
         fairyFinderHtml,
         heartThiefHtml,
-        fairyBottleHtml
+        fairyBottleHtml,
+        mazeRunnerHtml
     });
 };
 app.getHighStat = ( key ) => {
@@ -108,7 +120,8 @@ app.getHighStat = ( key ) => {
         username: config.all.botName,
         fairies: 0,
         hearts: 0,
-        bottles: 0
+        bottles: 0,
+        mazes: 0
     };
 
     app.stats.forEach(( stat ) => {
@@ -138,7 +151,7 @@ app.runCommand = ( comm, message ) => {
         app.commands.forEach(( command ) => {
             const match = message.match( command.regex );
 
-            if ( app.gameon && match && command.name === comm ) {
+            if ( /*app.gameon &&*/ match && command.name === comm ) {
                 resolve({
                     match
                 });
@@ -273,7 +286,11 @@ app.websocketserver.on( "connect", ( connection ) => {
 
     connection.on( "message", ( message ) => {
         // { event, data }
-        // const utf8Data = JSON.parse( message.utf8Data );
+        const utf8Data = JSON.parse( message.utf8Data );
+
+        if ( utf8Data.event === "mazerunner" ) {
+            app.getCommand( "mazeRunner" ).update( utf8Data.data );
+        }
     });
 });
 app.websocketserver.on( "close", ( connection ) => {

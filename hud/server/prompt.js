@@ -56,6 +56,10 @@ module.exports = {
                 } else if ( chunk === "!bgm"  ) {
                     this.app.broadcast( "bgm", {} );
 
+                // TOGGLE: Maze
+                } else if ( chunk === "!maze"  ) {
+                    this.app.broadcast( "maze", {} );
+
                 // CHAT
                 } else {
                     this.app.twitch.tmi.emitMe( chunk );

@@ -26,7 +26,7 @@ body {
 }
 
 body.dev {
-    background-color: $black01;
+    background-color: $black;
 }
 
 
@@ -72,13 +72,9 @@ body.dev {
     font-family: "Calamity-Bold";
     font-size: 22px;
     line-height: 1.5;
-
-    // span {
-    //     font-family: "Calamity-Bold";
-    // }
+    pointer-events: none;
 
     h1, h2, h3, h4, h5, h6 {
-        // font-family: "Calamity-Bold";
         font-size: 28px;
     }
     h2, h3, h4, h5, h6 {
@@ -316,5 +312,16 @@ body.dev {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1;
+}
+.hud__maze {
+    background-color: $black02;
+    height: 1000px;
+    // left: 50%;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translate3d( 0, -50%, 0 );
+    width: 200px;
     z-index: 1;
 }

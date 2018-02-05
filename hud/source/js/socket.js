@@ -7,6 +7,7 @@ import follows from "./lib/follows";
 import subs from "./lib/subs";
 import cheers from "./lib/cheers";
 import leaders from "./lib/leaders";
+import maze from "./lib/maze";
 
 
 
@@ -53,6 +54,12 @@ const socket = {
             } else if ( response.event === "bgm" ) {
                 audio.background();
 
+            } else if ( response.event === "maze" ) {
+                maze.render();
+
+            } else if ( response.event === "mazerunner" ) {
+                maze.push( response.data );
+
             } else if ( response.event === "alert" ) {
                 alert.push( response.data );
                 audio.play( response.data.audioHit );
@@ -94,6 +101,7 @@ const socket = {
             this.app.subs = subs.init();
             this.app.cheers = cheers.init();
             this.app.leaders = leaders.init();
+            this.app.maze = maze.init();
         };
         this.websocket.onclose = () => {};
     }
