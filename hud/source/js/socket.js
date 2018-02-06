@@ -39,6 +39,9 @@ const socket = {
                 alert.push({
                     alertHtml: response.data.fairyBottleHtml
                 });
+                alert.push({
+                    alertHtml: response.data.mazeRunnerHtml
+                });
                 audio.backgroundQuiet( true );
                 audio.play( response.data.audioHit ).then(( /*audioHit*/ ) => {
                     alert.hide();
@@ -49,7 +52,7 @@ const socket = {
                         alertHtml: response.data.fairyFinderHtml
                     });
 
-                }, (alert.duration * 2) + 1000 );
+                }, (alert.duration * 3) + 1000 );
 
             } else if ( response.event === "bgm" ) {
                 audio.background();
