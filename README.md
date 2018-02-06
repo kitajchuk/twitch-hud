@@ -23,7 +23,10 @@ Here's the catch. We want to find all the fairies, but we also want **Kita** to 
 * `!ht`: Heart Thief: Steal a heart from **Kita**.
 * `!ff`: Fairy Finder: Attempt to catch a fairy.
 * `!fb`: Fairy's Bottle: Recover a heart for **Kita**.
-* `!left n`: Maze Runner: Move the green block through the maze to the yellow block. You can use left, up, right and down followed by a number to move the Hero through the Labrinth.
+* `!left n`: Maze Runner: Move the green block through the maze to the yellow block.
+* `!up n`: Maze Runner: Move the green block through the maze to the yellow block.
+* `!right n`: Maze Runner: Move the green block through the maze to the yellow block.
+* `!down n`: Maze Runner: Move the green block through the maze to the yellow block.
 
 
 
