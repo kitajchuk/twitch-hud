@@ -14,6 +14,7 @@ const crypto = require( "crypto" );
 const files = require( "../../files" );
 const config = require( "../../config" );
 const prompt = require( "./prompt" );
+const alerts = require( "./alerts" );
 const twitch = require( "./twitch/index" );
 const oauthFile = path.join( __dirname, "json/oauth.json" );
 const statsFile = path.join( __dirname, "json/stats.json" );
@@ -29,6 +30,7 @@ app.dev = (process.argv.pop() === "dev" ? true : false);
 app.commands = require( "./commands/index" );
 app.twitch = twitch;
 app.prompt = prompt;
+app.alerts = alerts;
 app.lager = lager;
 app.config = config;
 app.connections = [];
@@ -42,6 +44,7 @@ app.init = () => {
 
     // Initialize prompt
     prompt.init( app );
+    alerts.init( app );
 
     // Initialize server
     app.server.listen( config.hud.port );
@@ -86,26 +89,10 @@ app.stopGame = () => {
     app.getCommand( "fairyFinder" ).stop();
 };
 app.statGame = () => {
-    const fairyFinder = app.getHighStat( "fairies" );
-    const fairyFinderHtml = `
-        <h1 class="pink">Fairy Finder</h1>
-        <p><span class="blue">${fairyFinder.username}</span> caught <span class="pink">${fairyFinder.fairies}</span> fairies!</p>
-    `;
-    const heartThief = app.getHighStat( "hearts" );
-    const heartThiefHtml = `
-        <h1 class="red">Heart Thief</h1>
-        <p><span class="blue">${heartThief.username}</span> slashed <span class="red">${heartThief.hearts}</span> hearts!</p>
-    `;
-    const fairyBottle = app.getHighStat( "bottles" );
-    const fairyBottleHtml = `
-        <h1 class="blue">Fairy Bottle</h1>
-        <p><span class="blue">${fairyBottle.username}</span> used <span class="blue">${fairyBottle.bottles}</span> fairy bottles!</p>
-    `;
-    const mazeRunner = app.getHighStat( "bottles" );
-    const mazeRunnerHtml = `
-        <h1 class="blue">Maze Runner</h1>
-        <p><span class="blue">${mazeRunner.username}</span> completed <span class="blue">${mazeRunner.mazes}</span> mazes!</p>
-    `;
+    const fairyFinderHtml = alerts.fairyFinderLeader( app.getHighStat( "fairies" ) );
+    const heartThiefHtml = alerts.heartThiefLeader( app.getHighStat( "hearts" ) );
+    const fairyBottleHtml = alerts.fairyBottleLeader( app.getHighStat( "bottles" ) );
+    const mazeRunnerHtml = alerts.mazeRunnerLeader( app.getHighStat( "mazes" ) );
 
     app.broadcast( "leaderboards", {
         audioHit: "greatFairyFountain",
@@ -137,6 +124,27 @@ app.getStats = ( name ) => {
     return app.stats.find(( stat ) => {
         return (stat.username === name);
     });
+};
+app.hasStats = ( name ) => {
+    return app.getStats( name ) ? true : false;
+};
+app.setStatUser = ( name, prop ) => {
+    const statUser = {
+        username: name,
+        fairies: 0,
+        hearts: 0,
+        bottles: 0,
+        mazes: 0
+    };
+
+    statUser[ prop ] = 1;
+
+    app.stats.push( statUser );
+};
+app.hitStatUser = ( name, prop ) => {
+    const statUser = app.getStats( name );
+    statUser[ prop ]++;
+    app.saveStats();
 };
 app.saveStats = () => {
     files.write( statsFile, app.stats );

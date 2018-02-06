@@ -28,21 +28,17 @@ module.exports = {
         });
     },
     update ( data ) {
-        const statUser = this.app.getStats( data.username );
-
-        if ( !statUser ) {
-            this.app.stats.push({
-                username: data.username,
-                fairies: 0,
-                hearts: 0,
-                bottles: 0,
-                mazes: 1
-            });
+        if ( !this.app.hasStats( data.username ) ) {
+            this.app.setStatUser( data.username, "mazes" );
 
         } else {
-            statUser.mazes++;
-            this.app.saveStats( data.username );
+            this.app.hitStatUser( data.username, "mazes" );
         }
+
+        this.app.broadcast( "alert", {
+            audioHit: "smallItem",
+            alertHtml: this.app.alerts.mazeRunnerWin( data )
+        });
 
         this.app.leaders();
     }

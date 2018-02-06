@@ -27,6 +27,10 @@ module.exports = {
                 } else if ( chunk === "!gamestat"  ) {
                     this.app.statGame();
 
+                // GAME: Maze Runner
+                } else if ( chunk === "!gamemaze"  ) {
+                    this.app.broadcast( "maze", {} );
+
                 // TEST: Host
                 } else if ( chunk === "!testhost"  ) {
                     this.app.twitch.tmi.alertHost( "pizzaButt", 420 );
@@ -55,10 +59,6 @@ module.exports = {
                 // TOGGLE: Background Music
                 } else if ( chunk === "!bgm"  ) {
                     this.app.broadcast( "bgm", {} );
-
-                // TOGGLE: Maze
-                } else if ( chunk === "!maze"  ) {
-                    this.app.broadcast( "maze", {} );
 
                 // CHAT
                 } else {

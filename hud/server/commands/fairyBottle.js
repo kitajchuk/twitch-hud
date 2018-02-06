@@ -33,29 +33,16 @@ module.exports = {
                 this.app.data.fairies.value -= num;
                 this.app.data.fairies.value = this.app.data.fairies.value < 0 ? 0 : this.app.data.fairies.value;
 
-                const alertHtml = `
-                    <h1 class="yellow">Fairy Bottle</h1>
-                    <p><span class="blue">${userstate.username}</span> gave you a fairy in a bottle worth <span class="blue">${num}</span> ${num > 1 ? "hearts" : "heart"}! You now have <span class="blue">${this.app.data.hearts.value}</span> whole hearts!</p>
-                `;
-                const statUser = this.app.getStats( userstate.username );
-
-                if ( !statUser ) {
-                    this.app.stats.push({
-                        username: userstate.username,
-                        fairies: 0,
-                        hearts: 0,
-                        bottles: 1,
-                        mazes: 0
-                    });
+                if ( !this.app.hasStats( userstate.username ) ) {
+                    this.app.setStatUser( userstate.username, "bottles" );
 
                 } else {
-                    statUser.bottles++;
-                    this.app.saveStats( userstate.username );
+                    this.app.hitStatUser( userstate.username, "bottles" );
                 }
 
                 this.app.broadcast( "alert", {
                     audioHit: "fairy",
-                    alertHtml
+                    alertHtml: this.app.alerts.fairyBottle( userstate )
                 });
 
                 this.app.broadcast( "hearts", {

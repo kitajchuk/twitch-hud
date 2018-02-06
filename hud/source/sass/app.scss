@@ -4,10 +4,12 @@
 @import "./reset";
 
 $red: #f30541;
-$blue: #2affea;
+$teal: #2affea;
 $green: #10ff59;
-$pink: #f06c9d;
+$pink: #f49ac1;
 $yellow: #eefd02;
+$purple: #6441a4;
+$blue: #1795d4;
 $white: #fff;
 $black: #000;
 $black075: rgba( 0, 0, 0, 0.75 );
@@ -55,8 +57,8 @@ body.dev {
 .red {
     color: $red;
 }
-.blue {
-    color: $blue;
+.teal {
+    color: $teal;
 }
 .green {
     color: $green;
@@ -66,6 +68,12 @@ body.dev {
 }
 .pink {
     color: $pink;
+}
+.purple {
+    color: $purple;
+}
+.blue {
+    color: $blue;
 }
 .hud {
     color: $white;
@@ -257,7 +265,7 @@ body.dev {
 .hud__subs,
 .hud__follows,
 .hud__leaders {
-    padding-top: $marginHorz;
+    padding-top: $marginHorz / 2;
 }
 
 

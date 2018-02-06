@@ -55,29 +55,16 @@ module.exports = {
                         this.app.data.fairies.value += num;
                         this.app.data.fairies.value = this.app.data.fairies.value > this.app.data.fairies.max ? this.app.data.fairies.max : this.app.data.fairies.value;
 
-                        const alertHtml = `
-                            <h1 class="yellow">Fairy Finder</h1>
-                            <p><span class="blue">${userstate.username}</span> caught a fairy with a hit percent of <span class="blue">${hit}</span>! We now have <span class="blue">${this.app.data.fairies.value}</span> out of <span class="blue">${this.app.data.fairies.max}</span> fairies!</p>
-                        `;
-                        const statUser = this.app.getStats( userstate.username );
-
-                        if ( !statUser ) {
-                            this.app.stats.push({
-                                username: userstate.username,
-                                fairies: 1,
-                                hearts: 0,
-                                bottles: 0,
-                                mazes: 0
-                            });
+                        if ( !this.app.hasStats( userstate.username ) ) {
+                            this.app.setStatUser( userstate.username, "fairies" );
 
                         } else {
-                            statUser.fairies++;
-                            this.app.saveStats( userstate.username );
+                            this.app.hitStatUser( userstate.username, "fairies" );
                         }
 
                         this.app.broadcast( "alert", {
                             audioHit: "greatFairyLaugh1",
-                            alertHtml
+                            alertHtml: this.app.alerts.fairyFinder( userstate, hit )
                         });
 
                         this.app.broadcast( "fairies", {

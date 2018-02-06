@@ -1,8 +1,6 @@
 import $ from "properjs-hobo";
 import Controller from "properjs-controller";
 import Stagger from "properjs-stagger";
-import alert from "./alert";
-import audio from "./audio";
 import socket from "../socket";
 
 
@@ -14,6 +12,7 @@ const maze = {
         this.cellauto = window.CellAuto;
         this.controller = new Controller();
         this.queue = [];
+        this.players = {};
         this.hero = {
             x: 0,
             y: 0,
@@ -56,6 +55,18 @@ const maze = {
         const points = [];
         let i = 0;
 
+        // Player has not made a move yet
+        if ( !this.players[ queueData.username ] ) {
+            this.players[ queueData.username ] = {
+                username: queueData.username,
+                moves: 0
+            };
+
+        // Increment players move count for this maze
+        } else {
+            this.players[ queueData.username ].moves++;
+        }
+
         while ( i < queueData.distance ) {
             i++;
 
@@ -68,8 +79,7 @@ const maze = {
                 points.push({
                     x,
                     y,
-                    chest: (x === this.chest.x && y === this.chest.y),
-                    username: queueData.username
+                    chest: (x === this.chest.x && y === this.chest.y)
                 });
 
             // Break the loop at first instance of collision
@@ -79,14 +89,14 @@ const maze = {
         }
 
         if ( points.length ) {
-            this.tick( points );
+            this.tick( this.players[ queueData.username ], points );
 
         } else {
             this.check();
         }
     },
 
-    tick ( points ) {
+    tick ( player, points ) {
         this.stagger = new Stagger({
             steps: points.length,
             delay: 250
@@ -110,14 +120,7 @@ const maze = {
                 this.stagger = null;
                 this.render();
 
-                alert.push({
-                    alertHtml: `
-                        <h1 class="blue">Maze Runner</h1>
-                        <p><span class="blue">${point.username}</span> completed the labrinth!</p>
-                    `
-                });
-                audio.play( "smallItem" );
-                socket.emit( "mazerunner", point );
+                socket.emit( "mazerunner", player );
             }
 
         }).done(() => {
@@ -160,6 +163,7 @@ const maze = {
 
     render () {
         this.queue = [];
+        this.players = {};
         this.hero.spawn = false;
         this.chest.spawn = false;
         this.isMoving = false;

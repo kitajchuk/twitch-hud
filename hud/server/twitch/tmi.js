@@ -51,7 +51,7 @@ module.exports = {
         });
 
         this.memo.client.connect().then(( foo ) => {
-            this.app.lager.server( `[twitch] ${this.memo.client.getUsername()} connected` );
+            this.app.lager.server( `[${this.name}] ${this.memo.client.getUsername()} connected` );
 
             // Chat
             this.memo.client.on( "chat", ( channel, userstate, message, self ) => {
@@ -107,13 +107,12 @@ module.exports = {
     },
     alertHost ( username, viewers ) {
         const alertHtml = `
-            <h1 class="blue">Host</h1>
-            <p><span class="blue">${username}</span> is now hosting you with a viewing party of <span class="blue">${viewers}</span>! Welcome to the channel!</p>
+
         `;
 
         this.app.broadcast( "alert", {
             audioHit: "goldSkulltula",
-            alertHtml
+            alertHtml: this.app.alerts.host( username, viewers )
         });
     },
     subSub ( app ) {
@@ -126,14 +125,11 @@ module.exports = {
         });
     },
     alertSub ( username, message, method ) {
-        const alertHtml = `
-            <h1 class="blue">Sub</h1>
-            <p><span class="blue">${username}</span> just subscribed to the channel! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
-        `;
+        const alertHtml =
 
         this.app.broadcast( "alert", {
             audioHit: "heartContainer",
-            alertHtml
+            alertHtml: this.app.alerts.sub( username, message, method )
         });
     },
     subResub ( app ) {
@@ -146,14 +142,11 @@ module.exports = {
         });
     },
     alertResub ( username, message, months, methods ) {
-        const alertHtml = `
-            <h1 class="blue">Resub</h1>
-            <p><span class="blue">${username}</span> has resubscribed to the channel for <span class="blue">${months}</span> months in a row! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
-        `;
+        const alertHtml =
 
         this.app.broadcast( "alert", {
             audioHit: "magicRefill",
-            alertHtml
+            alertHtml: this.app.alerts.resub( username, message, months, methods )
         });
     },
     topCheer ( userstate ) {
@@ -179,14 +172,11 @@ module.exports = {
         });
     },
     alertCheer ( userstate, message ) {
-        const alertHtml = `
-            <h1 class="blue">Cheer</h1>
-            <p><span class="blue">${userstate.username}</span> has just cheered <span class="blue">${userstate.bits}</span> bits! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
-        `;
+        const alertHtml =
 
         this.app.broadcast( "alert", {
             audioHit: "item",
-            alertHtml
+            alertHtml: this.app.alerts.cheer( userstate, message )
         });
     }
 };

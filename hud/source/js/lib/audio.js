@@ -11,6 +11,7 @@ const audio = {
         this.nodeFx[ 0 ].volume = 1;
         this.nodeBgm[ 0 ].volume = 0.5;
         this.plays = {};
+        this.isBGM = false;
         this.media = {
             fx: {
                 item: "/media/fx/08_Item_Catch.wav",
@@ -90,6 +91,20 @@ const audio = {
     },
 
     background () {
+        if ( !this.isBGM ) {
+            this.backgroundBegin();
+
+        } else if ( this.nodeBgm[ 0 ].paused ) {
+            this.backgroundResume();
+
+        } else {
+            this.backgroundPause();
+        }
+    },
+
+    backgroundBegin () {
+        this.isBGM = true;
+
         const tunes = Object.keys( this.media.bgm );
         let tune = tunes[ Math.floor( Math.random() * (tunes.length - 1)) ];
         let lastTune = tune;

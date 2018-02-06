@@ -143,14 +143,9 @@ module.exports = {
         });
     },
     alertFollow ( username ) {
-        const alertHtml = `
-            <h1 class="blue">Follow</h1>
-            <p><span class="blue">${username}</span> is now following the channel!</p>
-        `;
-
         this.app.broadcast( "alert", {
             audioHit: "smallItem",
-            alertHtml
+            alertHtml: this.app.alerts.follow( username )
         });
     }
 };
