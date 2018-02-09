@@ -16,13 +16,13 @@ const maze = {
         this.hero = {
             x: 0,
             y: 0,
-            color: "#10ff59",
+            color: "#2affea",
             spawn: false
         };
         this.chest = {
             x: 0,
             y: 0,
-            color: "#eefd02",
+            color: "#6441a4",
             spawn: false
         };
         this.isMoving = false;

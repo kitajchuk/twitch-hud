@@ -14,7 +14,7 @@ const cheers = {
     },
 
     render () {
-        this.cheersBox[ 0 ].innerHTML = `<span class="yellow">${this.data.bits}</span> by <span class="yellow">${this.data.username}</span>`;
+        this.cheersBox[ 0 ].innerHTML = `<span class="purple">${this.data.bits}</span> bits by <span class="teal">${this.data.username}</span>`;
     },
 
     pipe ( data ) {

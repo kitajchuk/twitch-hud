@@ -29,6 +29,21 @@ body {
 
 body.dev {
     background-color: $black;
+    background-image: url( "/img/bg.jpg" );
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+
+    &:after {
+        background-color: $black01;
+        content: "";
+        left: 0;
+        height: 100%;
+        opacity: 0.5;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
 }
 
 
@@ -104,8 +119,10 @@ body.dev {
  * HUD Alerts
 *******************************************************************************/
 .hud__alert {
+    align-items: flex-start;
     background-color: $black075;
     border-radius: 200px;
+    display: flex;
     left: 50%;
     opacity: 0;
     padding: 50px 150px;
@@ -127,9 +144,9 @@ body.dev {
     }
 
     p {
-        max-width: 480px;
+        max-width: 100%;
         transform: translate3d( 0, $transform * 2, 0 );
-        width: 100%;
+        width: 600px;
     }
 
     &.is-active {
@@ -142,7 +159,7 @@ body.dev {
         }
         .hud__alert__bot {
             opacity: 1;
-            transform: translate3d( 130px, -50%, 0 );
+            transform: translate3d( 100px, -50%, 0 );
         }
     }
 }
@@ -152,7 +169,18 @@ body.dev {
     position: absolute;
     top: 0;
     opacity: 0;
-    transform: translate3d( 130px, -100% , 0 );
+    transform: translate3d( 100px, -100% , 0 );
+}
+.hud__alert__msg,
+.hud__alert__icon {
+    display: inline-block;
+    vertical-align: top;
+}
+.hud__alert__icon {
+    height: 128px;
+    margin-right: 20px;
+    width: 128px;
+        display: none;
 }
 
 
@@ -234,13 +262,13 @@ body.dev {
         background-image: url( "/img/fairygrey.png" );
         background-position: 50% 50%;
         background-repeat: no-repeat;
-        background-size: 28px 28px;
-        height: 28px;
+        background-size: 32px 32px;
+        height: 32px;
         left: 50%;
         position: absolute;
         top: 50%;
         transform: translate3d( -50%, -50%, 0 );
-        width: 28px;
+        width: 32px;
         transition: background-color $duration ease;
     }
 
@@ -313,20 +341,10 @@ body.dev {
 /******************************************************************************
  * HUD FX Canvas
 *******************************************************************************/
-.hud__canvas {
-    height: 100%;
-    left: 0;
-    pointer-events: none;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1;
-}
 .hud__maze {
     background-color: $black02;
     box-shadow: 0 0 10px 5px rgba( 0, 0, 0, 0.25 );
     height: 1000px;
-    // left: 50%;
     position: fixed;
     right: 0;
     top: 50%;

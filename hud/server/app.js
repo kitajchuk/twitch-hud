@@ -54,29 +54,41 @@ app.leaders = () => {
     const heartThief = app.getHighStat( "hearts" );
     const fairyBottle = app.getHighStat( "bottles" );
     const mazeRunner = app.getHighStat( "mazes" );
+    const leaderBoard = [];
 
-    app.broadcast( "leaders", [
-        {
+    if ( fairyFinder ) {
+        leaderBoard.push({
             username: fairyFinder.username,
             value: fairyFinder.fairies,
             color: "pink"
-        },
-        {
+        });
+    }
+
+    if ( heartThief ) {
+        leaderBoard.push({
             username: heartThief.username,
             value: heartThief.hearts,
             color: "red"
-        },
-        {
+        });
+    }
+
+    if ( fairyBottle ) {
+        leaderBoard.push({
             username: fairyBottle.username,
             value: fairyBottle.bottles,
             color: "blue"
-        },
-        {
+        });
+    }
+
+    if ( mazeRunner ) {
+        leaderBoard.push({
             username: mazeRunner.username,
             value: mazeRunner.mazes,
-            color: "green"
-        }
-    ]);
+            color: "teal"
+        });
+    }
+
+    app.broadcast( "leaders", leaderBoard );
 };
 app.startGame = () => {
     app.gameon = true;
@@ -104,7 +116,6 @@ app.statGame = () => {
 };
 app.getHighStat = ( key ) => {
     let test = {
-        username: config.all.botName,
         fairies: 0,
         hearts: 0,
         bottles: 0,
@@ -118,7 +129,7 @@ app.getHighStat = ( key ) => {
         }
     });
 
-    return test;
+    return test.username ? test : null;
 };
 app.getStats = ( name ) => {
     return app.stats.find(( stat ) => {

@@ -18,19 +18,19 @@ module.exports = {
     sub ( username, message, method ) {
         return `
             <h1 class="yellow">Sub</h1>
-            <p><span class="teal">${username}</span> just subscribed to the channel! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
+            <p><span class="teal">${username}</span> just subscribed to the channel! <span class="yellow">${message ? message : "&hellip;"}</span></p>
         `;
     },
     resub ( username, message, months, methods ) {
         return `
             <h1 class="yellow">Resub</h1>
-            <p><span class="teal">${username}</span> has resubscribed to the channel for <span class="teal">${months}</span> months in a row! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
+            <p><span class="teal">${username}</span> has resubscribed to the channel for <span class="teal">${months}</span> months in a row! <span class="yellow">${message ? message : "&hellip;"}</span></p>
         `;
     },
     cheer ( userstate, message ) {
         return `
-            <h1 class="yellow">Cheer</h1>
-            <p><span class="teal">${userstate.username}</span> has just cheered <span class="teal">${userstate.bits}</span> bits! They said: <span class="yellow">${message ? message : "Nothing&hellip;"}</span></p>
+            <h1 class="purple">Cheer</h1>
+            <p><span class="teal">${userstate.username}</span> has just cheered <span class="teal">${userstate.bits}</span> bits! <span class="yellow">${message ? message : "&hellip;"}</span></p>
         `;
     },
     follow ( username ) {
@@ -42,7 +42,7 @@ module.exports = {
     heartThief ( userstate, num ) {
         return `
             <h1 class="red">Heart Thief</h1>
-            <p><span class="teal">${userstate.username}</span> has stolen <span class="teal">${num}</span> of your hearts! You only have <span class="teal">${this.app.data.hearts.value}</span> ${this.app.data.hearts.value > 1 ? "hearts" : "heart"} left&hellip;</p>
+            <p><span class="teal">${userstate.username}</span> has stolen a heart! You only have <span class="teal">${this.app.data.hearts.value}</span> ${this.app.data.hearts.value > 1 ? "hearts" : "heart"} left&hellip;</p>
         `;
     },
     heartCounter () {
@@ -53,13 +53,13 @@ module.exports = {
     },
     fairyBottle ( userstate ) {
         return `
-            <h1 class="yellow">Fairy Bottle</h1>
+            <h1 class="blue">Fairy Bottle</h1>
             <p><span class="teal">${userstate.username}</span> gave you a fairy in a bottle! You now have <span class="teal">${this.app.data.hearts.value}</span> whole hearts!</p>
         `;
     },
     fairyFinder ( userstate, hit ) {
         return `
-            <h1 class="yellow">Fairy Finder</h1>
+            <h1 class="pink">Fairy Finder</h1>
             <p><span class="teal">${userstate.username}</span> caught a fairy with a hit percent of <span class="teal">${hit}</span>! We now have <span class="teal">${this.app.data.fairies.value}</span> out of <span class="teal">${this.app.data.fairies.max}</span> fairies!</p>
         `;
     },

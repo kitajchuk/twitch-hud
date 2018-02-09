@@ -122,6 +122,8 @@ module.exports = {
             this.app.lager.info( "sub method object >>>" );
 
             this.alertSub( username, message, method );
+
+            this.app.twitch.helix.getSubs();
         });
     },
     alertSub ( username, message, method ) {
@@ -139,6 +141,8 @@ module.exports = {
             this.app.lager.info( "resub methods object >>>" );
 
             this.alertResub( username, message, months, methods );
+
+            this.app.twitch.helix.getSubs();
         });
     },
     alertResub ( username, message, months, methods ) {
