@@ -87,8 +87,8 @@ app.watch = () => {
             }
         }
 
-    // Run every quarter of a day...
-    }, (leaseTimeMS / 4) );
+    // Run every half cycle ( 5 days at max )
+    }, (leaseTimeMS / 2) );
 };
 app.unsub = () => {
     for ( const topicUrl in app.subs ) {
