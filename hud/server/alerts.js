@@ -90,7 +90,7 @@ module.exports = {
     mazeRunnerWin ( player ) {
         return `
             <h1 class="teal">Maze Runner</h1>
-            <p><span class="teal">${player.username}</span> completed the labrinth using a total of <span class="teal">${player.moves}</span> moves!</p>
+            <p><span class="teal">${player.username}</span> completed the labyrinth using a total of <span class="teal">${player.moves}</span> moves!</p>
         `;
     }
 };
