@@ -29,21 +29,21 @@ body {
 
 body.dev {
     background-color: $black;
-    background-image: url( "/img/bg.jpg" );
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
+    // background-image: url( "/img/bg.jpg" );
+    // background-size: cover;
+    // background-repeat: no-repeat;
+    // background-position: 50% 50%;
 
-    &:after {
-        background-color: $black01;
-        content: "";
-        left: 0;
-        height: 100%;
-        opacity: 0.5;
-        position: fixed;
-        top: 0;
-        width: 100%;
-    }
+    // &:after {
+    //     background-color: $black01;
+    //     content: "";
+    //     left: 0;
+    //     height: 100%;
+    //     opacity: 0.5;
+    //     position: fixed;
+    //     top: 0;
+    //     width: 100%;
+    // }
 }
 
 
