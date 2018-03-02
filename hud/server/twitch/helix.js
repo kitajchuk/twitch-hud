@@ -97,7 +97,7 @@ module.exports = {
             }).sort(( a, b ) => {
                 return (new Date( b.created_at ) - new Date( a.created_at ));
 
-            }).slice( 0, 3 );
+            }).slice( 0, 1 );
 
             this.app.broadcast(
                 "subs",
@@ -114,7 +114,7 @@ module.exports = {
                     // Filter out my bot, @kitajchukbot
                     return (follow.from_id !== this.app.config.all.botId);
 
-                }).slice( 0, 3 );
+                }).slice( 0, 1 );
                 const query = [];
 
                 recent.forEach(( follow ) => {
