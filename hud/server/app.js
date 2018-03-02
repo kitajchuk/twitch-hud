@@ -114,6 +114,15 @@ app.statGame = () => {
         mazeRunnerHtml
     });
 };
+app.resetGame = () => {
+    app.stats.forEach(( statUser ) => {
+        statUser.fairies = 0;
+        statUser.hearts = 0;
+        statUser.bottles = 0;
+        statUser.mazes = 0;
+    });
+    app.saveStats();
+};
 app.getHighStat = ( key ) => {
     let test = {
         fairies: 0,

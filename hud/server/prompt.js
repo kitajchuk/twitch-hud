@@ -27,6 +27,10 @@ module.exports = {
                 } else if ( chunk === "!gamestat"  ) {
                     this.app.statGame();
 
+                // GAME: Leader boards
+            } else if ( chunk === "!gamereset"  ) {
+                    this.app.resetGame();
+
                 // GAME: Maze Runner
                 } else if ( chunk === "!gamemaze"  ) {
                     this.app.broadcast( "maze", {} );
