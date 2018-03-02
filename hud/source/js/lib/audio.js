@@ -9,7 +9,7 @@ const audio = {
         this.nodeFx = $( ".js-hud-audio-fx" );
         this.nodeBgm = $( ".js-hud-audio-bgm" );
         this.nodeFx[ 0 ].volume = 1;
-        this.nodeBgm[ 0 ].volume = 0.5;
+        this.nodeBgm[ 0 ].volume = 0.3;
         this.plays = {};
         this.isBGM = false;
         this.media = {
@@ -43,7 +43,22 @@ const audio = {
                 keporaGebora: "/media/bgm/20_Kepora_Geboras_Theme.wav",
                 marketTheme: "/media/bgm/21_Market.wav",
                 goronCity: "/media/bgm/33_Goron_City.wav",
-                zorasDomain: "/media/bgm/39_Zoras_Domain.wav"
+                zorasDomain: "/media/bgm/39_Zoras_Domain.wav",
+                dekuTree: "/media/bgm/03_Deku_Tree.wav",
+                fairyFlying: "/media/bgm/04_Fairy_Flying.wav",
+                house: "/media/bgm/05_House.wav",
+                shop: "/media/bgm/10_Shop.wav",
+                insideDekuTree: "/media/bgm/12_Inside_The_Deku_Tree.wav",
+                legendOfHyrule: "/media/bgm/16_Legend_Of_Hyrule.wav",
+                shootingGallery: "/media/bgm/22_Shooting_Gallery.wav",
+                castleCourtyard: "/media/bgm/23_Hyrule_Castle_Courtyard.wav",
+                zeldasTheme: "/media/bgm/26_Zeldas_Theme.wav",
+                hyruleFieldMorning: "/media/bgm/32_Hyrule_Field_Morning_Theme.wav",
+                potionShop: "/media/bgm/41_Potion_Shop.wav",
+                templeOfTime: "/media/bgm/44_Temple_Of_Time.wav",
+                sheiksTheme: "/media/bgm/50_Sheiks_Theme.wav",
+                windmillHut: "/media/bgm/57_Windmill_Hut.wav",
+                endCredits: "/media/bgm/82_End_Credits.wav"
             }
         };
 
