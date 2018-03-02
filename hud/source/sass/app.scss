@@ -292,8 +292,20 @@ body.dev {
 }
 .hud__subs,
 .hud__follows,
-.hud__leaders {
+.hud__leaders,
+.hud__commands {
     padding-top: $marginHorz / 2;
+}
+.hud__commands {
+    div {
+        transform: translateX( -6px );
+    }
+    .mono {
+        display: inline-block;
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+    }
 }
 
 

@@ -11,10 +11,12 @@ const leaders = {
     },
 
     render () {
-        this.leadersBox[ 0 ].innerHTML = this.data.map(( stat ) => {
+        const html = this.data.map(( stat ) => {
             return `<div class="${stat.color}">${stat.username}: ${stat.value}</div>`;
 
         }).join( "" );
+
+        this.leadersBox[ 0 ].innerHTML = html || "Leaders have been<br />reset. Let's play!";
     },
 
     pipe ( data ) {
